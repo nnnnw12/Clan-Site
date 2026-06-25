@@ -248,6 +248,7 @@
             <div class="clan-tag">Rust Team</div>
             <div class="clan-name">〔 249 〕</div>
             
+            <!-- Колокольчик пользователя -->
             <button class="notification-bell" onclick="changeTab('notifications')">
                 <span class="badge" id="bell-badge">0</span>
                 <svg class="bell-icon" viewBox="0 0 24 24">
@@ -256,13 +257,15 @@
             </button>
         </div>
         
+        <!-- Меню вкладок -->
         <div class="tabs" id="main-tabs-nav">
             <button class="tab-btn active" id="t-main" onclick="changeTab('main')">Главная</button>
             <button class="tab-btn" id="t-about" onclick="changeTab('about')">О составе</button>
-            <button class="tab-btn" id="t-rules" onclick="changeTab('rules')">Правила</button>
+            <button class="tab-btn" id="t-rules" onclick="changeTab('rules')">Требования</button>
             <button class="tab-btn" id="btn-admin-tab" onclick="changeTab('admin')">Заявки <span class="badge" id="app-badge">0</span></button>
         </div>
 
+        <!-- ГЛАВНАЯ СТРАНИЦА -->
         <div id="main" class="tab-content active">
             <div class="slogan-list">
                 <div class="slogan-card"><span class="slogan-label">Приоритет</span><span class="slogan-value">Сыгранность</span></div>
@@ -272,6 +275,7 @@
             <button class="btn-action" onclick="changeTab('form')">Подать заявку в клан</button>
         </div>
 
+        <!-- О СОСТАВЕ -->
         <div id="about" class="tab-content">
             <button class="btn-back" onclick="changeTab('main')">← Назад</button>
             <div class="clan-info">
@@ -280,9 +284,10 @@
             </div>
         </div>
 
+        <!-- КРИТЕРИИ И ТРЕБОВАНИЯ -->
         <div id="rules" class="tab-content">
             <button class="btn-back" onclick="changeTab('main')">← Назад</button>
-            <h3 style="color:#fff; margin-bottom: 20px; font-size:1.2rem;">Критерии для вступления</h3>
+            <h3 style="color:#fff; margin-bottom: 20px; font-size:1.2rem;">Требования для вступления</h3>
             <ul class="rules-list">
                 <li>
                     <span class="rules-icon">✓</span>
@@ -299,6 +304,7 @@
             </ul>
         </div>
 
+        <!-- ФОРМА ЗАЯВКИ -->
         <div id="form" class="tab-content">
             <button class="btn-back" onclick="changeTab('main')">← Назад на главную</button>
             
@@ -360,6 +366,7 @@
             </div>
         </div>
 
+        <!-- УВЕДОМЛЕНИЯ ПОЛЬЗОВАТЕЛЯ -->
         <div id="notifications" class="tab-content">
             <button class="btn-back" onclick="changeTab('main')">← Назад</button>
             <h3 style="color:#fff; margin-bottom: 20px; font-size:1.1rem;">Ваши уведомления</h3>
@@ -368,6 +375,7 @@
             </div>
         </div>
 
+        <!-- АДМИН-ПАНЕЛЬ -->
         <div id="admin" class="tab-content">
             <button class="btn-back" onclick="changeTab('main')">← Выйти из панели</button>
             <button class="btn-logout" onclick="logoutLeader()">Выйти из сессии</button>
@@ -379,6 +387,7 @@
 
     </div>
 
+    <!-- Модальное окно лидера -->
     <div class="modal" id="status-modal">
         <div class="modal-content">
             <h4 id="modal-title">Сообщение для игрока</h4>
@@ -389,6 +398,7 @@
         </div>
     </div>
 
+    <!-- Секретный код для входа -->
     <div class="leader-login" id="login-container">
         <input type="password" id="leader-code" placeholder="Код Лидера" oninput="checkLeaderCode()">
     </div>
@@ -532,7 +542,7 @@
                 item.className = 'app-item';
                 
                 let statusClass = 'st-queue';
-                if(app.status === 'Смотрят') statusClass = 'st-review';
+                if(app.status === 'Смотряat') statusClass = 'st-review';
                 if(app.status === 'Принят') statusClass = 'st-accept';
                 if(app.status === 'Отклонено') statusClass = 'st-reject';
 

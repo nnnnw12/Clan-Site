@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Клан 〔 249_〕</title>
+    <title>Клан 〔 249 〕</title>
     <style>
         :root {
             --bg-dark: #08090c;
             --bg-panel: #0f111a;
             --text-main: #9fa4b0;
             --text-bright: #ffffff;
-            --accent: #d4af37; /* Сдержанное золото за победы */
+            --accent: #d4af37;
             --border: rgba(255, 255, 255, 0.03);
-            --discord: #5865F2;
+            --input-bg: #151824;
+            
+            /* Статусы */
+            --status-queue: #e67e22;
+            --status-review: #3498db;
+            --status-accept: #2ecc71;
+            --status-reject: #e74c3c;
         }
 
         * {
@@ -29,14 +35,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
             position: relative;
+            padding: 20px 0;
         }
 
-        /* Мягкий игровой фон без яркого неона */
         body::before {
             content: '';
-            position: absolute;
+            position: fixed;
             width: 140%;
             height: 140%;
             background: radial-gradient(circle at center, #171a26 0%, var(--bg-dark) 65%);
@@ -46,26 +51,20 @@
 
         .container {
             width: 90%;
-            max-width: 520px;
+            max-width: 550px;
             background: var(--bg-panel);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 45px 35px;
+            padding: 40px 35px;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
             position: relative;
-            opacity: 0;
-            transform: translateY(15px);
-            animation: containerEntry 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-
-        @keyframes containerEntry {
-            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Шапка Клана */
         .clan-header {
             text-align: center;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
+            position: relative;
         }
 
         .clan-tag {
@@ -85,16 +84,30 @@
             line-height: 1;
         }
 
-        /* Вкладки */
+        /* Колокольчик */
+        .notification-bell {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            padding: 8px;
+            transition: color 0.2s;
+        }
+        .notification-bell:hover { color: #fff; }
+        .bell-icon { width: 24px; height: 24px; fill: currentColor; }
+
+        /* Вкладки меню */
         .tabs {
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 5px;
             background: rgba(0, 0, 0, 0.25);
             padding: 5px;
             border-radius: 6px;
-            margin-bottom: 35px;
-            border: 1px solid rgba(255, 255, 255, 0.01);
+            margin-bottom: 30px;
         }
 
         .tab-btn {
@@ -102,188 +115,123 @@
             background: none;
             border: none;
             color: #555a65;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             cursor: pointer;
-            padding: 12px;
+            padding: 12px 5px;
             border-radius: 4px;
             transition: all 0.25s ease;
+            position: relative;
+            text-align: center;
         }
 
-        .tab-btn:hover {
-            color: var(--text-bright);
-        }
-
+        .tab-btn:hover { color: var(--text-bright); }
         .tab-btn.active {
             color: var(--text-bright);
             background: rgba(255, 255, 255, 0.03);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
-        .tab-content {
+        /* Индикаторы (Цифры) */
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -2px;
+            background: var(--status-reject);
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 5px;
+            border-radius: 10px;
+            font-weight: 700;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
             display: none;
         }
 
-        .tab-content.active {
-            display: block;
-        }
+        #btn-admin-tab { display: none; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        /* Главная: Слоганы команды */
-        .slogan-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 35px;
-        }
-
+        /* Слоганы */
+        .slogan-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
         .slogan-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            padding: 16px 20px;
-            border-radius: 8px;
-            position: relative;
-            
-            opacity: 0;
-            transform: translateY(10px);
-            animation: cardFadeIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.02);
+            padding: 16px 20px; border-radius: 8px;
         }
+        .slogan-label { font-size: 0.8rem; text-transform: uppercase; color: #4e5361; font-weight: 700; }
+        .slogan-value { font-size: 1.05rem; font-weight: 700; color: var(--text-bright); }
 
-        .slogan-card::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 2px;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .slogan-card:nth-child(1) { animation-delay: 0.15s; }
-        .slogan-card:nth-child(2) { animation-delay: 0.25s; }
-        .slogan-card:nth-child(3) { animation-delay: 0.35s; }
-
-        .slogan-card:hover::before {
-            background: var(--accent);
-        }
-
-        .slogan-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #4e5361;
-            font-weight: 700;
-        }
-
-        .slogan-value {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--text-bright);
-        }
-
-        .slogan-card.gold-focus .slogan-value {
-            color: var(--accent);
-        }
-        .slogan-card.gold-focus::before {
-            background: var(--accent);
-        }
-
-        @keyframes cardFadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Кнопка Discord */
-        .action-area {
-            opacity: 0;
-            animation: cardFadeIn 0.5s ease forwards 0.45s;
-        }
-
-        .discord-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(180deg, #5865F2 0%, #4752C4 100%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: var(--text-bright);
+        /* Кнопки */
+        .btn-action, .btn-submit {
+            display: block; width: 100%; padding: 16px; text-align: center;
+            background: linear-gradient(180deg, #d4af37 0%, #aa8416 100%);
+            border: 1px solid rgba(255,255,255,0.1); color: #000;
+            font-weight: 800; font-size: 0.9rem; text-transform: uppercase;
+            letter-spacing: 2px; border-radius: 6px; cursor: pointer; transition: all 0.2s;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 20px rgba(71, 82, 196, 0.25), inset 0 1px 0 rgba(255,255,255,0.15);
         }
+        .btn-action:hover, .btn-submit:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        
+        .btn-back {
+            background: none; border: 1px solid rgba(255,255,255,0.1); color: var(--text-main);
+            padding: 8px 16px; font-size: 0.8rem; font-weight: 600; border-radius: 4px;
+            cursor: pointer; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 5px;
+        }
+        .btn-back:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
 
-        .discord-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(71, 82, 196, 0.45);
-            filter: brightness(1.08);
+        /* Поля ввода */
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 0.85rem; color: var(--text-bright); font-weight: 600; margin-bottom: 8px; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 12px; background: var(--input-bg); border: 1px solid var(--border);
+            border-radius: 6px; color: #fff; font-size: 0.95rem; outline: none;
         }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+        
+        .success-screen { text-align: center; padding: 30px 0; display: none; }
+        .success-screen h3 { color: var(--accent); font-size: 1.5rem; margin-bottom: 10px; }
 
-        .discord-icon {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
-        }
+        .clan-info, .rules-list { font-size: 0.95rem; line-height: 1.7; }
+        .clan-info p, .rules-list li { margin-bottom: 16px; }
 
-        /* Описание Клана */
-        .clan-info {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: var(--text-main);
-            animation: cardFadeIn 0.4s ease forwards;
-        }
+        /* Стилизация правил */
+        .rules-list { list-style: none; }
+        .rules-list li { background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.02); padding: 15px 20px; border-radius: 8px; display: flex; align-items: center; gap: 15px; }
+        .rules-icon { color: var(--accent); font-weight: 800; font-size: 1.1rem; }
 
-        .clan-info p {
-            margin-bottom: 16px;
+        /* Списки заявок */
+        .apps-list { display: flex; flex-direction: column; gap: 15px; max-height: 500px; overflow-y: auto; }
+        .app-item { background: #121520; border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+        .app-item h4 { color: #fff; margin-bottom: 10px; font-size: 1.1rem; }
+        .app-details { font-size: 0.85rem; display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px; color: #7f8491;}
+        .app-details span { color: #fff; font-weight: 500; }
+        
+        .status-select { padding: 8px; border-radius: 4px; background: #1c2030; color: #fff; border: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; width: 100%; max-width: 200px; }
+        
+        /* Модальное окно */
+        .modal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            justify-content: center; align-items: center; z-index: 100;
         }
+        .modal-content {
+            background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px; border-radius: 12px; width: 90%; max-width: 400px;
+        }
+        .modal-content h4 { color: #fff; margin-bottom: 15px; }
 
-        .feature-box {
-            background: rgba(0, 0, 0, 0.2);
-            border-left: 2px solid var(--accent);
-            padding: 15px 20px;
-            margin: 20px 0;
-            color: var(--text-bright);
-            font-weight: 500;
-            border-radius: 0 6px 6px 0;
-        }
+        /* Оповещения */
+        .notifications-list { display: flex; flex-direction: column; gap: 10px; }
+        .note-item { background: #131722; border-left: 3px solid var(--accent); padding: 15px; border-radius: 0 6px 6px 0; }
+        .note-item.accepted { border-left-color: var(--status-accept); }
+        .note-item.rejected { border-left-color: var(--status-reject); }
+        .note-item h5 { color: #fff; margin-bottom: 5px; font-size: 0.95rem; }
+        .note-item p { font-size: 0.85rem; margin-bottom: 8px; }
+        .ds-btn { display: inline-block; padding: 6px 12px; background: #5865F2; color: #fff; font-size: 0.8rem; text-decoration: none; font-weight: bold; border-radius: 4px; }
 
-        .warning-text {
-            color: #e54b4b;
-            font-weight: 700;
-            background: rgba(229, 75, 75, 0.05);
-            padding: 10px 14px;
-            border-radius: 6px;
-            border: 1px solid rgba(229, 75, 75, 0.1);
-            display: block;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .footer-tags {
-            margin-top: 30px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 4px;
-            color: #313541;
-            text-align: center;
-            text-transform: uppercase;
-            border-top: 1px solid var(--border);
-            padding-top: 20px;
-        }
-
-        @media (max-width: 480px) {
-            .container { padding: 35px 20px; }
-            .clan-name { font-size: 2.5rem; }
-        }
+        .leader-login { position: fixed; bottom: 15px; left: 15px; opacity: 0.2; transition: opacity 0.3s; }
+        .leader-login:hover { opacity: 1; }
+        .leader-login input { background: #111; border: 1px solid #222; padding: 6px 10px; border-radius: 4px; color: var(--accent); font-size: 0.75rem; width: 90px; outline: none; }
     </style>
 </head>
 <body>
@@ -293,76 +241,357 @@
         <div class="clan-header">
             <div class="clan-tag">Rust Team</div>
             <div class="clan-name">〔 249 〕</div>
+            
+            <!-- Колокольчик пользователя -->
+            <button class="notification-bell" onclick="changeTab('notifications')">
+                <span class="badge" id="bell-badge">0</span>
+                <svg class="bell-icon" viewBox="0 0 24 24">
+                    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 4.86 6 7.42 6 10v5l-2 2v1h16v-1l-2-2z"/>
+                </svg>
+            </button>
         </div>
         
-        <!-- Вкладки -->
-        <div class="tabs">
-            <button class="tab-btn active" onclick="openTab(event, 'main')">Главная</button>
-            <button class="tab-btn" onclick="openTab(event, 'about')">О составе</button>
+        <!-- Меню вкладок -->
+        <div class="tabs" id="main-tabs-nav">
+            <button class="tab-btn active" id="t-main" onclick="changeTab('main')">Главная</button>
+            <button class="tab-btn" id="t-about" onclick="changeTab('about')">О составе</button>
+            <button class="tab-btn" id="t-rules" onclick="changeTab('rules')">Правила</button>
+            <button class="tab-btn" id="btn-admin-tab" onclick="changeTab('admin')">Заявки <span class="badge" id="app-badge">0</span></button>
         </div>
 
-        <!-- ГЛАВНАЯ -->
+        <!-- ГЛАВНАЯ СТРАНИЦА -->
         <div id="main" class="tab-content active">
             <div class="slogan-list">
-                <div class="slogan-card">
-                    <span class="slogan-label">Приоритет</span>
-                    <span class="slogan-value">Сыгранность</span>
-                </div>
-                <div class="slogan-card">
-                    <span class="slogan-label">Метод</span>
-                    <span class="slogan-value">Дисциплина</span>
-                </div>
-                <div class="slogan-card gold-focus">
-                    <span class="slogan-label">Цель</span>
-                    <span class="slogan-value">Максимальный КПД</span>
-                </div>
+                <div class="slogan-card"><span class="slogan-label">Приоритет</span><span class="slogan-value">Сыгранность</span></div>
+                <div class="slogan-card"><span class="slogan-label">Метод</span><span class="slogan-value">Дисциплина</span></div>
+                <div class="slogan-card" style="border-left: 2px solid var(--accent);"><span class="slogan-label">Цель</span><span class="slogan-value" style="color:var(--accent);">Максимальный КПД</span></div>
             </div>
-
-            <div class="action-area">
-                <a href="https://discord.gg/N27UXBtfBy" target="_blank" class="discord-link">
-                    <svg class="discord-icon" viewBox="0 0 127.14 96.36">
-                        <path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a74.37,74.37,0,0,0,6.73-10.93,68.43,68.43,0,0,1-10.64-5.12c.91-.67,1.81-1.37,2.65-2.1a75.22,75.22,0,0,0,72.76,0c.84,1,1.74,1.43,2.65,2.1a68.43,68.43,0,0,1-10.64,5.12,74.37,74.37,0,0,0,6.73,10.93,105.73,105.73,0,0,0,31-18.83C129.07,50.12,123.14,27.23,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.92,46,53.72,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.16,46,96,53,91,65.69,84.69,65.69Z"/>
-                    </svg>
-                    Вступить в Discord
-                </a>
-            </div>
+            <button class="btn-action" onclick="changeTab('form')">Подать заявку в клан</button>
         </div>
 
         <!-- О СОСТАВЕ -->
         <div id="about" class="tab-content">
+            <button class="btn-back" onclick="changeTab('main')">← Назад</button>
             <div class="clan-info">
-                <p>Мы не собираем огромный «зерг», в котором никто друг друга не знает. Наша цель — сильный, сыгранный и полностью контролируемый состав.</p>
-                
+                <p>Мы не собираем огромный «зерг». Наша цель — сильный, сыгранный и полностью контролируемый состав.</p>
                 <p>В команде ценятся не пустые часы в Steam, а реальная польза на вайпе. Каждый боец знает свою задачу и вносит вклад в общий результат.</p>
-                
-                <div class="feature-box">
-                    Весь геймплей строится на жесткой дисциплине, высоком онлайне во время важных стадий и четкой командной игре.
-                </div>
+            </div>
+        </div>
 
-                <p>Если ты играешь только ради себя, заходишь пострелять чужой сет и не готов работать на команду — нам не по пути.</p>
-                
-                <p>Если готов выкладываться на общий результат состава и играть в слаженном паке — добро пожаловать в 「249」.</p>
-                
-                <span class="warning-text">DISCIPLINE • TEAMWORK • DOMINATION</span>
+        <!-- КРИТЕРИИ И ПРАВИЛА -->
+        <div id="rules" class="tab-content">
+            <button class="btn-back" onclick="changeTab('main')">← Назад</button>
+            <h3 style="color:#fff; margin-bottom: 20px; font-size:1.2rem;">Критерии для вступления</h3>
+            <ul class="rules-list">
+                <li>
+                    <span class="rules-icon">✓</span>
+                    <div><b>Возраст:</b> Минимально 15+ лет (исключительно с 14 лет при адекватности).</div>
+                </li>
+                <li>
+                    <span class="rules-icon">✓</span>
+                    <div><b>Игровые часы:</b> От 1000 часов в Rust (исключение от 300 часов для сильных билдеров/электриков/фермеров).</div>
+                </li>
+                <li>
+                    <span class="rules-icon">✓</span>
+                    <div><b>Дисциплина:</b> Готовность беспрекословно работать на общий командный результат и слушать Коллера.</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ФОРМА ЗАЯВКИ -->
+        <div id="form" class="tab-content">
+            <button class="btn-back" onclick="changeTab('main')">← Назад на главную</button>
+            
+            <form id="clan-form" onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label>1. Ваше Имя</label>
+                    <input type="text" id="f-name" placeholder="Введите ваше имя" required>
+                </div>
+                <div class="form-group">
+                    <label>2. Ваш ник в Steam</label>
+                    <input type="text" id="f-steam-nick" placeholder="Игровой никнейм" required>
+                </div>
+                <div class="form-group">
+                    <label>3. Ссылка на ваш профиль Steam</label>
+                    <input type="url" id="f-steam-link" placeholder="https://steamcommunity.com/id/..." required>
+                </div>
+                <div class="form-group">
+                    <label>4. Часы в Rust (Всего ; Через точку с запятой на девблогах, если играли)</label>
+                    <input type="text" id="f-hours" placeholder="Пример: 1500 ; 400" required>
+                </div>
+                <div class="form-group">
+                    <label>5. Кем вы будете в составе? (Ваша основная роль)</label>
+                    <select id="f-role">
+                        <option value="Коллер (Caller)">Коллер (Caller)</option>
+                        <option value="Комбатёр (PvP)">Комбатёр (PvP)</option>
+                        <option value="Рейдер (Raider)">Рейдер (Raider)</option>
+                        <option value="Главный Билдер (Main Builder)">Главный Билдер (Main Builder)</option>
+                        <option value="Билдер (Builder)">Билдер (Builder)</option>
+                        <option value="Электрик (Electrician)">Электрик (Electrician)</option>
+                        <option value="Фермер (Farmer)">Фермер (Farmer)</option>
+                        <option value="Фармила (Resource Farmer)">Фармила (Resource Farmer)</option>
+                        <option value="Пилот (Pilot)">Пилот (Pilot)</option>
+                        <option value="Водитель (Driver)">Водитель (Driver)</option>
+                        <option value="Снайпер (Sniper)">Снайпер (Sniper)</option>
+                        <option value="Лутер (Looter)">Лутер (Looter)</option>
+                        <option value="Медик (Medic)">Медик (Medic)</option>
+                        <option value="Рекрут (Recruit)">Рекрут (Recruit)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>6. Почему именно вы должны попасть в клан?</label>
+                    <textarea id="f-useful" rows="3" placeholder="Расскажите о своем опыте и навыках..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>7. Будете ли вы слушаться лидера и играть сыгранно в команде?</label>
+                    <select id="f-team">
+                        <option>Да, беспрекословно готов работать на команду</option>
+                        <option>Смотря какая ситуация</option>
+                        <option>Нет, я играю сам по себе</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">Отправить заявку</button>
+            </form>
+
+            <div class="success-screen" id="success-block">
+                <h3>Заявка успешно отправлена!</h3>
+                <p>Лидеры клана рассмотрят твою анкету. Следи за уведомлениями в колокольчике сверху!</p>
+                <button class="btn-action" onclick="resetFormView()">Ок</button>
+            </div>
+        </div>
+
+        <!-- УВЕДОМЛЕНИЯ ПОЛЬЗОВАТЕЛЯ -->
+        <div id="notifications" class="tab-content">
+            <button class="btn-back" onclick="changeTab('main')">← Назад</button>
+            <h3 style="color:#fff; margin-bottom: 20px; font-size:1.1rem;">Ваши уведомления</h3>
+            <div class="notifications-list" id="user-notes-container">
+                <p id="no-notes" style="text-align:center; color:#555;">У вас пока нет уведомлений.</p>
+            </div>
+        </div>
+
+        <!-- АДМИН-ПАНЕЛЬ -->
+        <div id="admin" class="tab-content">
+            <button class="btn-back" onclick="changeTab('main')">← Выйти из панели</button>
+            <h3 style="color:#fff; margin-bottom: 20px; font-size:1.2rem;">Панель управления анкетами</h3>
+            <div class="apps-list" id="apps-container">
+                <p id="no-apps" style="text-align:center; color:#555;">Новых заявок пока нет.</p>
             </div>
         </div>
 
     </div>
 
+    <!-- Модальное окно лидера -->
+    <div class="modal" id="status-modal">
+        <div class="modal-content">
+            <h4 id="modal-title">Сообщение для игрока</h4>
+            <div class="form-group">
+                <textarea id="modal-text" rows="4" placeholder="Например: Отличный профиль. Ждем тебя в дискорде на обговоре деталей!"></textarea>
+            </div>
+            <button class="btn-submit" onclick="saveStatusWithComment()">Подтвердить и отправить</button>
+        </div>
+    </div>
+
+    <!-- Секретный код для входа -->
+    <div class="leader-login">
+        <input type="password" id="leader-code" placeholder="Код Лидера" oninput="checkLeaderCode()">
+    </div>
+
     <script>
-        function openTab(evt, tabName) {
-            const tabContents = document.getElementsByClassName("tab-content");
-            for (let i = 0; i < tabContents.length; i++) {
-                tabContents[i].classList.remove("active");
-            }
+        let applications = JSON.parse(localStorage.getItem('c_apps')) || [];
+        let userNotes = JSON.parse(localStorage.getItem('c_notes')) || [];
+        let currentEditingIndex = null;
+        let currentTargetStatus = null;
 
-            const tabBtns = document.getElementsByClassName("tab-btn");
-            for (let i = 0; i < tabBtns.length; i++) {
-                tabBtns[i].classList.remove("active");
-            }
+        window.onload = function() {
+            updateBadges();
+            renderApplications();
+            renderNotes();
+        };
 
-            document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.classList.add("active");
+        function changeTab(tabId) {
+            const contents = document.getElementsByClassName('tab-content');
+            for(let i=0; i<contents.length; i++) contents[i].classList.remove('active');
+            
+            document.getElementById(tabId).classList.add('active');
+
+            const btns = document.getElementsByClassName('tab-btn');
+            for(let i=0; i<btns.length; i++) btns[i].classList.remove('active');
+            
+            if (tabId === 'main') document.getElementById('t-main').classList.add('active');
+            if (tabId === 'about') document.getElementById('t-about').classList.add('active');
+            if (tabId === 'rules') document.getElementById('t-rules').classList.add('active');
+            if (tabId === 'admin') document.getElementById('btn-admin-tab').classList.add('active');
+
+            if (tabId === 'notifications') {
+                document.getElementById('bell-badge').style.display = 'none';
+            }
+        }
+
+        function submitForm(e) {
+            e.preventDefault();
+            
+            const newApp = {
+                name: document.getElementById('f-name').value,
+                steamNick: document.getElementById('f-steam-nick').value,
+                steamLink: document.getElementById('f-steam-link').value,
+                hours: document.getElementById('f-hours').value,
+                role: document.getElementById('f-role').value,
+                useful: document.getElementById('f-useful').value,
+                team: document.getElementById('f-team').value,
+                status: 'В очереди',
+                comment: ''
+            };
+
+            applications.push(newApp);
+            localStorage.setItem('c_apps', JSON.stringify(applications));
+
+            document.getElementById('clan-form').style.display = 'none';
+            document.getElementById('success-block').style.display = 'block';
+
+            updateBadges();
+            renderApplications();
+        }
+
+        function resetFormView() {
+            document.getElementById('clan-form').reset();
+            document.getElementById('clan-form').style.display = 'block';
+            document.getElementById('success-block').style.display = 'none';
+            changeTab('main');
+        }
+
+        function checkLeaderCode() {
+            const code = document.getElementById('leader-code').value;
+            const adminTab = document.getElementById('btn-admin-tab');
+            if(code === 'HellFoot') {
+                adminTab.style.display = 'block';
+            } else {
+                adminTab.style.display = 'none';
+            }
+        }
+
+        function updateBadges() {
+            const newApps = applications.filter(a => a.status === 'В очереди').length;
+            const appBadge = document.getElementById('app-badge');
+            if(newApps > 0) {
+                appBadge.innerText = newApps;
+                appBadge.style.display = 'block';
+            } else {
+                appBadge.style.display = 'none';
+            }
+        }
+
+        function renderApplications() {
+            const container = document.getElementById('apps-container');
+            const noAppsText = document.getElementById('no-apps');
+            
+            container.innerHTML = '';
+            container.appendChild(noAppsText);
+
+            if(applications.length === 0) {
+                noAppsText.style.display = 'block';
+                return;
+            }
+            noAppsText.style.display = 'none';
+
+            applications.forEach((app, index) => {
+                const item = document.createElement('div');
+                item.className = 'app-item';
+                
+                let statusClass = 'st-queue';
+                if(app.status === 'Смотрят') statusClass = 'st-review';
+                if(app.status === 'Принят') statusClass = 'st-accept';
+                if(app.status === 'Отклонено') statusClass = 'st-reject';
+
+                item.innerHTML = `
+                    <h4>${app.name} <span class="status-tag ${statusClass}">${app.status}</span></h4>
+                    <div class="app-details">
+                        <p><b>Ник в Steam:</b> <span>${app.steamNick}</span></p>
+                        <p><b>Ссылка на Steam:</b> <a href="${app.steamLink}" target="_blank" style="color:var(--accent); text-decoration:underline;">Открыть профиль</a></p>
+                        <p><b>Часы (Раст ; Девблог):</b> <span>${app.hours}</span></p>
+                        <p><b>Выбранная роль:</b> <span style="color:var(--accent); font-weight:bold;">${app.role}</span></p>
+                        <p><b>Почему полезен:</b> <span>${app.useful}</span></p>
+                        <p><b>Будет ли слушаться:</b> <span>${app.team}</span></p>
+                        ${app.comment ? `<p style="color:var(--accent); margin-top:8px;"><b>Ответ лидера:</b> ${app.comment}</p>` : ''}
+                    </div>
+                    <label style="font-size:0.8rem; display:block; margin-bottom:5px; margin-top:10px;">Изменить статус:</label>
+                    <select class="status-select" onchange="openStatusModal(${index}, this.value)">
+                        <option value="В очереди" ${app.status === 'В очереди' ? 'selected' : ''}>В очереди</option>
+                        <option value="Смотрят" ${app.status === 'Смотрят' ? 'selected' : ''}>Смотрят</option>
+                        <option value="Принят" ${app.status === 'Принят' ? 'selected' : ''}>Принят</option>
+                        <option value="Отклонено" ${app.status === 'Отклонено' ? 'selected' : ''}>Отклонено</option>
+                    </select>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function openStatusModal(index, newStatus) {
+            currentEditingIndex = index;
+            currentTargetStatus = newStatus;
+            
+            document.getElementById('modal-title').innerText = `Сообщение для игрока ("${newStatus}")`;
+            document.getElementById('modal-text').value = '';
+            document.getElementById('status-modal').style.display = 'flex';
+        }
+
+        function saveStatusWithComment() {
+            const commentText = document.getElementById('modal-text').value || 'Решение по вашей анкете принято.';
+            
+            applications[currentEditingIndex].status = currentTargetStatus;
+            applications[currentEditingIndex].comment = commentText;
+            localStorage.setItem('c_apps', JSON.stringify(applications));
+
+            const playerNote = {
+                targetName: applications[currentEditingIndex].name,
+                status: currentTargetStatus,
+                text: commentText,
+                date: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+            };
+            
+            userNotes.unshift(playerNote);
+            localStorage.setItem('c_notes', JSON.stringify(userNotes));
+
+            document.getElementById('status-modal').style.display = 'none';
+            
+            const bellBadge = document.getElementById('bell-badge');
+            bellBadge.innerText = parseInt(bellBadge.innerText || 0) + 1;
+            bellBadge.style.display = 'block';
+
+            updateBadges();
+            renderApplications();
+            renderNotes();
+        }
+
+        function renderNotes() {
+            const container = document.getElementById('user-notes-container');
+            const noNotesText = document.getElementById('no-notes');
+            
+            container.innerHTML = '';
+            container.appendChild(noNotesText);
+
+            if(userNotes.length === 0) {
+                noNotesText.style.display = 'block';
+                return;
+            }
+            noNotesText.style.display = 'none';
+
+            userNotes.forEach(note => {
+                const element = document.createElement('div');
+                let typeClass = '';
+                let statusText = '';
+                
+                if(note.status === 'Принят') { typeClass = 'accepted'; statusText = 'Ваша заявка одобрена!'; }
+                else if(note.status === 'Отклонено') { typeClass = 'rejected'; statusText = 'Заявка была отклонена'; }
+                else { statusText = `Статус вашей анкеты: "${note.status}"`; }
+
+                element.className = `note-item ${typeClass}`;
+                element.innerHTML = `
+                    <h5>${statusText} <span style="float:right; font-size:0.75rem; color:#555;">${note.date}</span></h5>
+                    <p style="color:#fff; margin-top:5px;"><b>Комментарий:</b> "${note.text}"</p>
+                    ${note.status === 'Принят' ? `<a href="https://discord.gg/N27UXBtfBy" target="_blank" class="ds-btn">Войти в Discord-канал</a>` : ''}
+                `;
+                container.appendChild(element);
+            });
         }
     </script>
 </body>

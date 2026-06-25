@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Клан 〔 249_〕</title>
+    <style>
+        :root {
+            --bg-dark: #08090c;
+            --bg-panel: #0f111a;
+            --text-main: #9fa4b0;
+            --text-bright: #ffffff;
+            --accent: #d4af37; /* Сдержанное золото за победы */
+            --border: rgba(255, 255, 255, 0.03);
+            --discord: #5865F2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Мягкий игровой фон без яркого неона */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle at center, #171a26 0%, var(--bg-dark) 65%);
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 520px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 45px 35px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+            position: relative;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: containerEntry 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes containerEntry {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Шапка Клана */
+        .clan-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .clan-tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .clan-name {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--text-bright);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        /* Вкладки */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 5px;
+            border-radius: 6px;
+            margin-bottom: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.01);
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #555a65;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 4px;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-bright);
+        }
+
+        .tab-btn.active {
+            color: var(--text-bright);
+            background: rgba(255, 255, 255, 0.03);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Главная: Слоганы команды */
+        .slogan-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 35px;
+        }
+
+        .slogan-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            padding: 16px 20px;
+            border-radius: 8px;
+            position: relative;
+            
+            opacity: 0;
+            transform: translateY(10px);
+            animation: cardFadeIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        .slogan-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .slogan-card:nth-child(1) { animation-delay: 0.15s; }
+        .slogan-card:nth-child(2) { animation-delay: 0.25s; }
+        .slogan-card:nth-child(3) { animation-delay: 0.35s; }
+
+        .slogan-card:hover::before {
+            background: var(--accent);
+        }
+
+        .slogan-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #4e5361;
+            font-weight: 700;
+        }
+
+        .slogan-value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-bright);
+        }
+
+        .slogan-card.gold-focus .slogan-value {
+            color: var(--accent);
+        }
+        .slogan-card.gold-focus::before {
+            background: var(--accent);
+        }
+
+        @keyframes cardFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Кнопка Discord */
+        .action-area {
+            opacity: 0;
+            animation: cardFadeIn 0.5s ease forwards 0.45s;
+        }
+
+        .discord-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(180deg, #5865F2 0%, #4752C4 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-bright);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 20px rgba(71, 82, 196, 0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+        }
+
+        .discord-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(71, 82, 196, 0.45);
+            filter: brightness(1.08);
+        }
+
+        .discord-icon {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Описание Клана */
+        .clan-info {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-main);
+            animation: cardFadeIn 0.4s ease forwards;
+        }
+
+        .clan-info p {
+            margin-bottom: 16px;
+        }
+
+        .feature-box {
+            background: rgba(0, 0, 0, 0.2);
+            border-left: 2px solid var(--accent);
+            padding: 15px 20px;
+            margin: 20px 0;
+            color: var(--text-bright);
+            font-weight: 500;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .warning-text {
+            color: #e54b4b;
+            font-weight: 700;
+            background: rgba(229, 75, 75, 0.05);
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid rgba(229, 75, 75, 0.1);
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .footer-tags {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #313541;
+            text-align: center;
+            text-transform: uppercase;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 35px 20px; }
+            .clan-name { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="clan-header">
+            <div class="clan-tag">Rust Team</div>
+            <div class="clan-name">〔 249 〕</div>
+        </div>
+        
+        <!-- Вкладки -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab(event, 'main')">Главная</button>
+            <button class="tab-btn" onclick="openTab(event, 'about')">О составе</button>
+        </div>
+
+        <!-- ГЛАВНАЯ -->
+        <div id="main" class="tab-content active">
+            <div class="slogan-list">
+                <div class="slogan-card">
+                    <span class="slogan-label">Приоритет</span>
+                    <span class="slogan-value">Сыгранность</span>
+                </div>
+                <div class="slogan-card">
+                    <span class="slogan-label">Метод</span>
+                    <span class="slogan-value">Дисциплина</span>
+                </div>
+                <div class="slogan-card gold-focus">
+                    <span class="slogan-label">Цель</span>
+                    <span class="slogan-value">Максимальный КПД</span>
+                </div>
+            </div>
+
+            <div class="action-area">
+                <a href="https://discord.gg/N27UXBtfBy" target="_blank" class="discord-link">
+                    <svg class="discord-icon" viewBox="0 0 127.14 96.36">
+                        <path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a74.37,74.37,0,0,0,6.73-10.93,68.43,68.43,0,0,1-10.64-5.12c.91-.67,1.81-1.37,2.65-2.1a75.22,75.22,0,0,0,72.76,0c.84,1,1.74,1.43,2.65,2.1a68.43,68.43,0,0,1-10.64,5.12,74.37,74.37,0,0,0,6.73,10.93,105.73,105.73,0,0,0,31-18.83C129.07,50.12,123.14,27.23,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.92,46,53.72,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.16,46,96,53,91,65.69,84.69,65.69Z"/>
+                    </svg>
+                    Вступить в Discord
+                </a>
+            </div>
+        </div>
+
+        <!-- О СОСТАВЕ -->
+        <div id="about" class="tab-content">
+            <div class="clan-info">
+                <p>Мы не собираем огромный «зерг», в котором никто друг друга не знает. Наша цель — сильный, сыгранный и полностью контролируемый состав.</p>
+                
+                <p>В команде ценятся не пустые часы в Steam, а реальная польза на вайпе. Каждый боец знает свою задачу и вносит вклад в общий результат.</p>
+                
+                <div class="feature-box">
+                    Весь геймплей строится на жесткой дисциплине, высоком онлайне во время важных стадий и четкой командной игре.
+                </div>
+
+                <p>Если ты играешь только ради себя, заходишь пострелять чужой сет и не готов работать на команду — нам не по пути.</p>
+                
+                <p>Если готов выкладываться на общий результат состава и играть в слаженном паке — добро пожаловать в 「249」.</p>
+                
+                <span class="warning-text">DISCIPLINE • TEAMWORK • DOMINATION</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+
+            const tabBtns = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tabBtns.length; i++) {
+                tabBtns[i].classList.remove("active");
+            }
+
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>

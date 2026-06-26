@@ -36,7 +36,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            padding: 20px;
+            padding: 20px 0;
         }
 
         body::before {
@@ -49,80 +49,8 @@
             z-index: -1;
         }
 
-        /* Двухколоночный макет */
-        .main-layout {
-            display: flex;
-            gap: 30px;
-            width: 100%;
-            max-width: 1100px;
-            align-items: flex-start;
-        }
-
-        /* Левая панель - Список участников */
-        .members-panel {
-            flex: 1;
-            background: var(--bg-panel);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-            max-height: 700px;
-            overflow-y: auto;
-        }
-
-        .members-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            text-align: left;
-        }
-
-        .members-table th, .members-table td {
-            padding: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-            font-size: 0.9rem;
-            vertical-align: middle;
-        }
-
-        .members-table th {
-            color: #fff;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-        }
-
-        .members-table td { color: var(--text-bright); }
-        .member-role-tag { color: var(--accent); font-weight: 600; }
-
-        /* Кнопка Steam в таблице */
-        .btn-steam-link {
-            display: inline-block;
-            padding: 4px 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-        .btn-steam-link:hover {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-        }
-
-        .btn-delete-member {
-            background: none; border: none; color: var(--status-reject); cursor: pointer;
-            font-weight: bold; font-size: 1rem; padding: 0 5px; display: none;
-        }
-        .btn-delete-member:hover { color: #ff6b6b; }
-
-        /* Правая панель - Основной контейнер сайта */
         .container {
-            width: 100%;
+            width: 90%;
             max-width: 550px;
             background: var(--bg-panel);
             border: 1px solid var(--border);
@@ -133,52 +61,138 @@
         }
 
         /* Шапка Клана */
-        .clan-header { text-align: center; margin-bottom: 30px; position: relative; }
-        .clan-tag { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 5px; color: var(--accent); margin-bottom: 8px; font-weight: 700; }
-        .clan-name { font-size: 3rem; font-weight: 900; color: var(--text-bright); letter-spacing: -1px; line-height: 1; }
+        .clan-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .clan-tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .clan-name {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--text-bright);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
 
         /* Колокольчик */
-        .notification-bell { position: absolute; top: 10px; right: 10px; cursor: pointer; background: none; border: none; color: var(--text-main); padding: 8px; transition: color 0.2s; }
+        .notification-bell {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            padding: 8px;
+            transition: color 0.2s;
+        }
         .notification-bell:hover { color: #fff; }
         .bell-icon { width: 24px; height: 24px; fill: currentColor; }
 
         /* Вкладки меню */
-        .tabs { display: flex; justify-content: center; gap: 5px; background: rgba(0, 0, 0, 0.25); padding: 5px; border-radius: 6px; margin-bottom: 30px; }
-        .tab-btn { flex: 1; background: none; border: none; color: #555a65; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; padding: 12px 5px; border-radius: 4px; transition: all 0.25s ease; position: relative; text-align: center; }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 5px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #555a65;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            padding: 12px 5px;
+            border-radius: 4px;
+            transition: all 0.25s ease;
+            position: relative;
+            text-align: center;
+        }
+
         .tab-btn:hover { color: var(--text-bright); }
-        .tab-btn.active { color: var(--text-bright); background: rgba(255, 255, 255, 0.03); }
+        .tab-btn.active {
+            color: var(--text-bright);
+            background: rgba(255, 255, 255, 0.03);
+        }
 
         /* Индикаторы (Цифры) */
-        .badge { position: absolute; top: -5px; right: -2px; background: var(--status-reject); color: white; font-size: 0.65rem; padding: 2px 5px; border-radius: 10px; font-weight: 700; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5); display: none; }
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -2px;
+            background: var(--status-reject);
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 5px;
+            border-radius: 10px;
+            font-weight: 700;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+            display: none;
+        }
+
         #btn-admin-tab { display: none; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
         /* Слоганы */
         .slogan-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
-        .slogan-card { display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.02); padding: 16px 20px; border-radius: 8px; }
+        .slogan-card {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.02);
+            padding: 16px 20px; border-radius: 8px;
+        }
         .slogan-label { font-size: 0.8rem; text-transform: uppercase; color: #4e5361; font-weight: 700; }
         .slogan-value { font-size: 1.05rem; font-weight: 700; color: var(--text-bright); }
 
-        /* Блок ручного добавления в админке */
-        .manual-add-box {
-            background: rgba(212, 175, 55, 0.02); border: 1px dashed rgba(212, 175, 55, 0.15);
-            padding: 20px; border-radius: 8px; margin-bottom: 30px; text-align: left;
+        /* Кнопки */
+        .btn-action, .btn-submit {
+            display: block; width: 100%; padding: 16px; text-align: center;
+            background: linear-gradient(180deg, #d4af37 0%, #aa8416 100%);
+            border: 1px solid rgba(255,255,255,0.1); color: #000;
+            font-weight: 800; font-size: 0.9rem; text-transform: uppercase;
+            letter-spacing: 2px; border-radius: 6px; cursor: pointer; transition: all 0.2s;
+            text-decoration: none;
         }
-        .manual-add-box h4 { color: #fff; font-size: 1rem; margin-bottom: 15px; }
-
-        /* Кнопки админки */
-        .btn-action, .btn-submit { display: block; width: 100%; padding: 16px; text-align: center; background: linear-gradient(180deg, #d4af37 0%, #aa8416 100%); border: 1px solid rgba(255,255,255,0.1); color: #000; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; border-radius: 6px; cursor: pointer; transition: all 0.2s; text-decoration: none; }
         .btn-action:hover, .btn-submit:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        .btn-back { background: none; border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 8px 16px; font-size: 0.8rem; font-weight: 600; border-radius: 4px; cursor: pointer; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 5px; }
+        
+        .btn-back {
+            background: none; border: 1px solid rgba(255,255,255,0.1); color: var(--text-main);
+            padding: 8px 16px; font-size: 0.8rem; font-weight: 600; border-radius: 4px;
+            cursor: pointer; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 5px;
+        }
         .btn-back:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
-        .btn-logout { background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.2); color: var(--status-reject); padding: 6px 12px; font-size: 0.8rem; font-weight: bold; border-radius: 4px; cursor: pointer; float: right; }
+
+        .btn-logout {
+            background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.2); color: var(--status-reject);
+            padding: 6px 12px; font-size: 0.8rem; font-weight: bold; border-radius: 4px; cursor: pointer; float: right;
+        }
         .btn-logout:hover { background: var(--status-reject); color: #fff; }
 
         /* Поля ввода */
         .form-group { margin-bottom: 18px; }
         .form-group label { display: block; font-size: 0.85rem; color: var(--text-bright); font-weight: 600; margin-bottom: 8px; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; color: #fff; font-size: 0.95rem; outline: none; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 12px; background: var(--input-bg); border: 1px solid var(--border);
+            border-radius: 6px; color: #fff; font-size: 0.95rem; outline: none;
+        }
         .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
         
         .success-screen { text-align: center; padding: 30px 0; display: none; }
@@ -187,17 +201,29 @@
         .clan-info, .rules-list { font-size: 0.95rem; line-height: 1.7; }
         .clan-info p, .rules-list li { margin-bottom: 16px; }
 
+        /* Стилизация требований */
+        .rules-list { list-style: none; }
+        .rules-list li { background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.02); padding: 15px 20px; border-radius: 8px; display: flex; align-items: center; gap: 15px; }
+        .rules-icon { color: var(--accent); font-weight: 800; font-size: 1.1rem; }
+
         /* Списки заявок */
         .apps-list { display: flex; flex-direction: column; gap: 15px; max-height: 500px; overflow-y: auto; }
         .app-item { background: #121520; border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
         .app-item h4 { color: #fff; margin-bottom: 10px; font-size: 1.1rem; }
         .app-details { font-size: 0.85rem; display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px; color: #7f8491;}
         .app-details span { color: #fff; font-weight: 500; }
+        
         .status-select { padding: 8px; border-radius: 4px; background: #1c2030; color: #fff; border: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; width: 100%; max-width: 200px; }
         
         /* Модальное окно */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 100; }
-        .modal-content { background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; }
+        .modal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            justify-content: center; align-items: center; z-index: 100;
+        }
+        .modal-content {
+            background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px; border-radius: 12px; width: 90%; max-width: 400px;
+        }
         .modal-content h4 { color: #fff; margin-bottom: 15px; }
 
         /* Оповещения */
@@ -216,217 +242,173 @@
 
         .admin-sessions-list { margin-top: 15px; background: #0b0c12; padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.02); display: none;}
         .admin-sessions-list h5 { color: #fff; font-size: 0.85rem; margin-bottom: 5px;}
-
-        @media (max-width: 900px) {
-            .main-layout { flex-direction: column-reverse; align-items: center; }
-            .members-panel { width: 100%; max-width: 550px; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="main-layout">
+    <div class="container">
         
-        <!-- ЛЕВАЯ КОЛОНКА: СПИСОК УЧАСТНИКОВ КЛАНА -->
-        <div class="members-panel">
-            <h3 style="color:#fff; font-size:1.1rem; letter-spacing:1px;">Участники состава 〔 249 〕</h3>
-            <table class="members-table">
-                <thead>
-                    <tr>
-                        <th>Имя / Никнейм</th>
-                        <th>Основная роль</th>
-                        <th>Steam</th>
-                        <th style="width: 30px;"></th>
-                    </tr>
-                </thead>
-                <tbody id="clan-members-tbody">
-                    <!-- Заполняется динамически из базы данных -->
-                </tbody>
-            </table>
+        <div class="clan-header">
+            <div class="clan-tag">Rust Team</div>
+            <div class="clan-name">〔 249 〕</div>
+            
+            <button class="notification-bell" onclick="changeTab('notifications')">
+                <span class="badge" id="bell-badge">0</span>
+                <svg class="bell-icon" viewBox="0 0 24 24">
+                    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 4.86 6 7.42 6 10v5l-2 2v1h16v-1l-2-2z"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="tabs" id="main-tabs-nav">
+            <button class="tab-btn active" id="t-main" onclick="changeTab('main')">Главная</button>
+            <button class="tab-btn" id="t-about" onclick="changeTab('about')">О составе</button>
+            <button class="tab-btn" id="t-rules" onclick="changeTab('rules')">Требования</button>
+            <button class="tab-btn" id="btn-admin-tab" onclick="changeTab('admin')">Заявки <span class="badge" id="app-badge">0</span></button>
+        </div>
 
-            <!-- Блок Сверхадмина (HellGod): Управление модераторами -->
-            <div class="admin-sessions-list" id="god-panel">
+        <div id="main" class="tab-content active">
+            <div class="slogan-list">
+                <div class="slogan-card"><span class="slogan-label">Приоритет</span><span class="slogan-value">Сыгранность</span></div>
+                <div class="slogan-card"><span class="slogan-label">Метод</span><span class="slogan-value">Дисциплина</span></div>
+                <div class="slogan-card" style="border-left: 2px solid var(--accent);"><span class="slogan-label">Цель</span><span class="slogan-value" style="color:var(--accent);">Максимальный КПД</span></div>
+            </div>
+            <button class="btn-action" onclick="changeTab('form')">Подать заявку в клан</button>
+        </div>
+
+        <div id="about" class="tab-content">
+            <button class="btn-back" onclick="changeTab('main')">← Назад</button>
+            <div class="clan-info">
+                <p>Мы не собираем огромный «зерг». Наша цель — сильный, сыгранный и полностью контролируемый состав.</p>
+                <p>В команде ценятся не пустые часы в Steam, а реальная польза на вайпе. Каждый боец знает свою задачу и вносит вклад в общий результат.</p>
+            </div>
+        </div>
+
+        <div id="rules" class="tab-content">
+            <button class="btn-back" onclick="changeTab('main')">← Назад</button>
+            <h3 style="color:#fff; margin-bottom: 20px; font-size:1.2rem;">Требования для вступления</h3>
+            <ul class="rules-list">
+                <li>
+                    <span class="rules-icon">✓</span>
+                    <div><b>Возраст:</b> Минимально 15+ лет (исключительно с 14 лет при адекватности).</div>
+                </li>
+                <li>
+                    <span class="rules-icon">✓</span>
+                    <div><b>Игровые часы:</b> От 1000 часов в Rust (исключение от 300 часов для сильных билдеров/электриков/фермеров).</div>
+                </li>
+                <li>
+                    <span class="rules-icon">✓</span>
+                    <div><b>Дисциплина:</b> Готовность беспрекословно работать на общий командный результат и слушать Коллера.</div>
+                </li>
+            </ul>
+        </div>
+
+        <div id="form" class="tab-content">
+            <button class="btn-back" onclick="changeTab('main')">← Назад на главную</button>
+            
+            <form id="clan-form" onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label>1. Ваше Имя</label>
+                    <input type="text" id="f-name" placeholder="Введите ваше имя" required>
+                </div>
+                <div class="form-group">
+                    <label>2. Ваш ник в Steam</label>
+                    <input type="text" id="f-steam-nick" placeholder="Игровой никнейм" required>
+                </div>
+                <div class="form-group">
+                    <label>3. Ссылка на ваш профиль Steam</label>
+                    <input type="url" id="f-steam-link" placeholder="https://steamcommunity.com/id/..." required>
+                </div>
+                <div class="form-group">
+                    <label>4. Часы в Rust (Всего ; Через точку с запятой на девблогах, если играли)</label>
+                    <input type="text" id="f-hours" placeholder="Пример: 1500 ; 400" required>
+                </div>
+                <div class="form-group">
+                    <label>5. Кем вы будете в составе? (Ваша основная роль)</label>
+                    <select id="f-role">
+                        <option value="Коллер (Caller)">Коллер (Caller)</option>
+                        <option value="Комбатёр (PvP)">Комбатёр (PvP)</option>
+                        <option value="Рейдер (Raider)">Рейдер (Raider)</option>
+                        <option value="Главный Билдер (Main Builder)">Главный Билдер (Main Builder)</option>
+                        <option value="Билдер (Builder)">Билдер (Builder)</option>
+                        <option value="Электрик (Electrician)">Электрик (Electrician)</option>
+                        <option value="Фермер (Farmer)">Фермер (Farmer)</option>
+                        <option value="Фармила (Resource Farmer)">Фармила (Resource Farmer)</option>
+                        <option value="Пилот (Pilot)">Пилот (Pilot)</option>
+                        <option value="Водитель (Driver)">Водитель (Driver)</option>
+                        <option value="Снайпер (Sniper)">Снайпер (Sniper)</option>
+                        <option value="Лутер (Looter)">Лутер (Looter)</option>
+                        <option value="Медик (Medic)">Медик (Medic)</option>
+                        <option value="Рекрут (Recruit)">Рекрут (Recruit)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>6. Почему именно вы должны попасть в клан?</label>
+                    <textarea id="f-useful" rows="3" placeholder="Расскажите о своем опыте и навыках..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>7. Будете ли вы слушаться лидера и играть сыгранно в команде?</label>
+                    <select id="f-team">
+                        <option>Да, беспрекословно готов работать на команду</option>
+                        <option>Смотря какая ситуация</option>
+                        <option>Нет, я играю сам по себе</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">Отправить заявку</button>
+            </form>
+
+            <div class="success-screen" id="success-block">
+                <h3>Заявка успешно отправлена!</h3>
+                <p>Лидеры клана рассмотрят твою анкету. Следи за уведомлениями в колокольчике сверху!</p>
+                <button class="btn-action" onclick="resetFormView()">Ок</button>
+            </div>
+        </div>
+
+        <div id="notifications" class="tab-content">
+            <button class="btn-back" onclick="changeTab('main')">← Назад</button>
+            <h3 style="color:#fff; margin-bottom: 20px; font-size:1.1rem;">Ваши уведомления</h3>
+            <div class="notifications-list" id="user-notes-container">
+                <p id="no-notes" style="text-align:center; color:#555;">У вас пока нет уведомлений.</p>
+            </div>
+        </div>
+
+        <div id="admin" class="tab-content">
+            <button class="btn-back" onclick="changeTab('main')">← Выйти из панели</button>
+            <button class="btn-logout" onclick="logoutLeader()">Выйти из сессии</button>
+            <h3 style="color:#fff; margin-bottom: 20px; font-size:1.2rem;">Панель управления анкетами</h3>
+            
+            <div class="admin-sessions-list" id="god-panel" style="margin-bottom: 25px;">
                 <h5>Активные сессии админов (HellFoot)</h5>
                 <p id="no-admins" style="font-size:0.8rem; color:#444;">Активных модераторов в сети нет.</p>
                 <div id="admins-list-container"></div>
             </div>
+
+            <div class="apps-list" id="apps-container">
+                <p id="no-apps" style="text-align:center; color:#555;">Новых заявок пока нет.</p>
+            </div>
         </div>
 
-        <!-- ПРАВАЯ КОЛОНКА: ОСНОВНОЙ ИНТЕРФЕЙС САЙТА -->
-        <div class="container">
-            
-            <div class="clan-header">
-                <div class="clan-tag">Rust Team</div>
-                <div class="clan-name">〔 249 〕</div>
-                
-                <button class="notification-bell" onclick="changeTab('notifications')">
-                    <span class="badge" id="bell-badge">0</span>
-                    <svg class="bell-icon" viewBox="0 0 24 24">
-                        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 4.86 6 7.42 6 10v5l-2 2v1h16v-1l-2-2z"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <div class="tabs" id="main-tabs-nav">
-                <button class="tab-btn active" id="t-main" onclick="changeTab('main')">Главная</button>
-                <button class="tab-btn" id="t-about" onclick="changeTab('about')">О составе</button>
-                <button class="tab-btn" id="t-rules" onclick="changeTab('rules')">Требования</button>
-                <button class="tab-btn" id="btn-admin-tab" onclick="changeTab('admin')">Заявки <span class="badge" id="app-badge">0</span></button>
-            </div>
-
-            <!-- ГЛАВНАЯ СТРАНИЦА -->
-            <div id="main" class="tab-content active">
-                <div class="slogan-list">
-                    <div class="slogan-card"><span class="slogan-label">Приоритет</span><span class="slogan-value">Сыгранность</span></div>
-                    <div class="slogan-card"><span class="slogan-label">Метод</span><span class="slogan-value">Дисциплина</span></div>
-                    <div class="slogan-card" style="border-left: 2px solid var(--accent);"><span class="slogan-label">Цель</span><span class="slogan-value" style="color:var(--accent);">Максимальный КПД</span></div>
-                </div>
-                <button class="btn-action" onclick="changeTab('form')">Подать заявку в клан</button>
-            </div>
-
-            <!-- О СОСТАВЕ -->
-            <div id="about" class="tab-content">
-                <button class="btn-back" onclick="changeTab('main')">← Назад</button>
-                <div class="clan-info">
-                    <p>Мы не собираем огромный «зерг». Наша цель — сильный, сыгранный и полностью контролируемый состав.</p>
-                    <p>В команде ценятся не пустые часы в Steam, а реальная польза на вайпе. Каждый боец знает свою задачу и вносит вклад в общий результат.</p>
-                </div>
-            </div>
-
-            <!-- ТРЕБОВАНИЯ -->
-            <div id="rules" class="tab-content">
-                <button class="btn-back" onclick="changeTab('main')">← Назад</button>
-                <h3 style="color:#fff; margin-bottom: 20px; font-size:1.2rem;">Требования для вступления</h3>
-                <ul class="rules-list">
-                    <li><span class="rules-icon">✓</span><div><b>Возраст:</b> Минимально 15+ лет (исключительно с 14 лет при адекватности).</div></li>
-                    <li><span class="rules-icon">✓</span><div><b>Игровые часы:</b> От 1000 часов в Rust (исключение от 300 часов для сильных билдеров/электриков/фермеров).</div></li>
-                    <li>
-                        <span class="rules-icon">✓</span>
-                        <div><b>Дисциплина:</b> Готовность беспрекословно работать на общий командный результат и слушать Коллера.</div>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- ФОРМА ЗАЯВКИ -->
-            <div id="form" class="tab-content">
-                <button class="btn-back" onclick="changeTab('main')">← Назад на главную</button>
-                
-                <form id="clan-form" onsubmit="submitForm(event)">
-                    <div class="form-group"><label>1. Ваше Имя</label><input type="text" id="f-name" placeholder="Введите ваше имя" required></div>
-                    <div class="form-group"><label>2. Ваш ник в Steam</label><input type="text" id="f-steam-nick" placeholder="Игровой никнейм" required></div>
-                    <div class="form-group"><label>3. Ссылка на ваш профиль Steam</label><input type="url" id="f-steam-link" placeholder="https://steamcommunity.com/id/..." required></div>
-                    <div class="form-group"><label>4. Часы в Rust (Всего ; Через точку с запятой на девблогах)</label><input type="text" id="f-hours" placeholder="Пример: 1500 ; 400" required></div>
-                    <div class="form-group">
-                        <label>5. Кем вы будете в составе? (Ваша основная роль)</label>
-                        <select id="f-role">
-                            <option value="Коллер (Caller)">Коллер (Caller)</option>
-                            <option value="Комбатёр (PvP)">Комбатёр (PvP)</option>
-                            <option value="Рейдер (Raider)">Рейдер (Raider)</option>
-                            <option value="Главный Билдер (Main Builder)">Главный Билдер (Main Builder)</option>
-                            <option value="Билдер (Builder)">Билдер (Builder)</option>
-                            <option value="Электрик (Electrician)">Электрик (Electrician)</option>
-                            <option value="Фермер (Farmer)">Фермер (Farmer)</option>
-                            <option value="Фармила (Resource Farmer)">Фармила (Resource Farmer)</option>
-                            <option value="Пилот (Pilot)">Пилот (Pilot)</option>
-                            <option value="Водитель (Driver)">Водитель (Driver)</option>
-                            <option value="Снайпер (Sniper)">Снайпер (Sniper)</option>
-                            <option value="Лутер (Looter)">Лутер (Looter)</option>
-                            <option value="Медик (Medic)">Медик (Medic)</option>
-                            <option value="Рекрут (Recruit)">Рекрут (Recruit)</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>6. Почему именно вы должны попасть в клан?</label><textarea id="f-useful" rows="3" placeholder="Расскажите о своем опыте и навыках..." required></textarea></div>
-                    <div class="form-group">
-                        <label>7. Будете ли вы слушаться лидера?</label>
-                        <select id="f-team"><option>Да, беспрекословно готов работать на команду</option><option>Смотря какая ситуация</option></select>
-                    </div>
-                    <button type="submit" class="btn-submit">Отправить заявку</button>
-                </form>
-
-                <div class="success-screen" id="success-block">
-                    <h3>Заявка успешно отправлена!</h3>
-                    <p>Лидеры клана рассмотрят твою анкету. Следи за уведомлениями в колокольчике сверху!</p>
-                    <button class="btn-action" onclick="resetFormView()">Ок</button>
-                </div>
-            </div>
-
-            <!-- УВЕДОМЛЕНИЯ -->
-            <div id="notifications" class="tab-content">
-                <button class="btn-back" onclick="changeTab('main')">← Назад</button>
-                <h3 style="color:#fff; margin-bottom: 20px; font-size:1.1rem;">Ваши уведомления</h3>
-                <div class="notifications-list" id="user-notes-container">
-                    <p id="no-notes" style="text-align:center; color:#555;">У вас пока нет уведомлений.</p>
-                </div>
-            </div>
-
-            <!-- АДМИН-ПАНЕЛЬ -->
-            <div id="admin" class="tab-content">
-                <button class="btn-back" onclick="changeTab('main')">← Выйти из панели</button>
-                <button class="btn-logout" onclick="logoutLeader()">Выйти из сессии</button>
-                <h3 style="color:#fff; margin-bottom: 20px; font-size:1.2rem;">Панель управления анкетами</h3>
-                
-                <!-- ФОРМА ДОБАВЛЕНИЯ УЧАСТНИКА ВРУЧНУЮ (ДЛЯ АДМИНОВ) -->
-                <div class="manual-add-box">
-                    <h4>Добавить участника вручную</h4>
-                    <form id="manual-add-form" onsubmit="addMemberManually(event)">
-                        <div class="form-group" style="margin-bottom:12px;">
-                            <label style="font-size:0.8rem;">Имя / Никнейм игрока</label>
-                            <input type="text" id="m-name" placeholder="Пример: HellFoot" style="padding:10px; font-size:0.85rem;" required>
-                        </div>
-                        <div class="form-group" style="margin-bottom:12px;">
-                            <label style="font-size:0.8rem;">Роль в клане</label>
-                            <select id="m-role" style="padding:10px; font-size:0.85rem;">
-                                <option value="Коллер (Caller)">Коллер (Caller)</option>
-                                <option value="Комбатёр (PvP)">Комбатёр (PvP)</option>
-                                <option value="Рейдер (Raider)">Рейдер (Raider)</option>
-                                <option value="Главный Билдер (Main Builder)">Главный Билдер (Main Builder)</option>
-                                <option value="Билдер (Builder)">Билдер (Builder)</option>
-                                <option value="Электрик (Electrician)">Электрик (Electrician)</option>
-                                <option value="Фермер (Farmer)">Фермер (Farmer)</option>
-                                <option value="Фармила (Resource Farmer)">Фармила (Resource Farmer)</option>
-                                <option value="Пилот (Pilot)">Пилот (Pilot)</option>
-                                <option value="Водитель (Driver)">Водитель (Driver)</option>
-                                <option value="Снайпер (Sniper)">Снайпер (Sniper)</option>
-                                <option value="Лутер (Looter)">Лутер (Looter)</option>
-                                <option value="Медик (Medic)">Медик (Medic)</option>
-                                <option value="Рекрут (Recruit)">Рекрут (Recruit)</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="margin-bottom:15px;">
-                            <label style="font-size:0.8rem;">Ссылка на профиль Steam</label>
-                            <input type="url" id="m-steam-link" placeholder="https://steamcommunity.com/..." style="padding:10px; font-size:0.85rem;" required>
-                        </div>
-                        <button type="submit" class="btn-submit" style="padding:12px; font-size:0.8rem;">Добавить в состав</button>
-                    </form>
-                </div>
-
-                <div class="apps-list" id="apps-container">
-                    <p id="no-apps" style="text-align:center; color:#555;">Новых заявок пока нет.</p>
-                </div>
-            </div>
-
-        </div>
     </div>
 
-    <!-- Модальное окно лидера -->
     <div class="modal" id="status-modal">
         <div class="modal-content">
             <h4 id="modal-title">Сообщение для игрока</h4>
-            <div class="form-group"><textarea id="modal-text" rows="4"></textarea></div>
+            <div class="form-group">
+                <textarea id="modal-text" rows="4" placeholder="Например: Отличный профиль. Ждем тебя в дискорде на обговоре деталей!"></textarea>
+            </div>
             <button class="btn-submit" onclick="saveStatusWithComment()">Подтвердить и отправить</button>
         </div>
     </div>
 
-    <!-- Секретные входы -->
     <div class="leader-login" id="login-container">
         <input type="password" id="leader-code" placeholder="Код Доступа" oninput="checkLeaderCode()">
     </div>
 
-    <!-- ПОДКЛЮЧЕНИЕ FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+        // Твой конфиг базы данных
         const firebaseConfig = {
             apiKey: "AIzaSyCsqJtOPQ6GxY6d01PrFHUvBCMERUMMHTQ",
             authDomain: "clan-b9798.firebaseapp.com",
@@ -441,26 +423,30 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        // Делаем функции Firebase доступными глобально для обычных скриптов
         window.dbRef = ref(db, 'applications');
         window.pushData = push;
         window.updateData = update;
-        window.removeData = remove;
         window.dbRefRaw = db;
         window.dbRefFunc = ref;
 
-        // Онлайн-подгрузка всей базы данных
+        // Начинаем слушать изменения в базе данных онлайн
         onValue(window.dbRef, (snapshot) => {
             const data = snapshot.val();
             window.applications = [];
+            
             if (data) {
                 Object.keys(data).forEach(key => {
-                    window.applications.push({ id: key, ...data[key] });
+                    window.applications.push({
+                        id: key,
+                        ...data[key]
+                    });
                 });
             }
+            
             window.updateBadges();
             window.renderApplications();
             window.renderNotes();
-            window.renderClanMembers(); // Перерисовываем таблицу участников слева
         });
     </script>
 
@@ -476,7 +462,9 @@
         function changeTab(tabId) {
             const contents = document.getElementsByClassName('tab-content');
             for(let i=0; i<contents.length; i++) contents[i].classList.remove('active');
+            
             document.getElementById(tabId).classList.add('active');
+
             const btns = document.getElementsByClassName('tab-btn');
             for(let i=0; i<btns.length; i++) btns[i].classList.remove('active');
             
@@ -484,16 +472,21 @@
             if (tabId === 'about') document.getElementById('t-about').classList.add('active');
             if (tabId === 'rules') document.getElementById('t-rules').classList.add('active');
             if (tabId === 'admin') document.getElementById('btn-admin-tab').classList.add('active');
+
             if (tabId === 'notifications') {
                 document.getElementById('bell-badge').style.display = 'none';
                 localStorage.setItem('last_bell_check', new Date().getTime());
             }
         }
 
-        // ОТПРАВКА АНКЕТЫ ИГРОКОМ
+        // ОТПРАВКА ЗАЯВКИ В ОНЛАЙН БАЗУ
         function submitForm(e) {
             e.preventDefault();
-            if (!window.pushData) return;
+            
+            if (!window.pushData) {
+                alert("База данных еще загружается, подождите секунду...");
+                return;
+            }
 
             const newApp = {
                 name: document.getElementById('f-name').value,
@@ -505,93 +498,31 @@
                 team: document.getElementById('f-team').value,
                 status: 'В очереди',
                 comment: '',
-                type: 'application',
                 timestamp: new Date().getTime()
             };
 
-            localStorage.setItem('my_app_name', newApp.name);
+            if(!localStorage.getItem('my_app_name')) {
+                localStorage.setItem('my_app_name', newApp.name);
+            }
 
             window.pushData(window.dbRef, newApp)
                 .then(() => {
                     document.getElementById('clan-form').style.display = 'none';
                     document.getElementById('success-block').style.display = 'block';
+                })
+                .catch(err => {
+                    alert("Ошибка отправки базы: " + err);
                 });
         }
 
-        // РУЧНОЕ ДОБАВЛЕНИЕ УЧАСТНИКА АДМИНИСТРАЦИЕЙ
-        function addMemberManually(e) {
-            e.preventDefault();
-            if (!window.pushData) return;
-
-            const mName = document.getElementById('m-name').value;
-            const mRole = document.getElementById('m-role').value;
-            const mSteam = document.getElementById('m-steam-link').value;
-
-            const manualUser = {
-                name: mName,
-                role: mRole,
-                steamLink: mSteam,
-                steamNick: mName,
-                status: "Принят", // Сразу попадает в состав
-                type: "manual",
-                timestamp: new Date().getTime()
-            };
-
-            window.pushData(window.dbRef, manualUser)
-                .then(() => {
-                    document.getElementById('manual-add-form').reset();
-                    alert("Участник успешно добавлен напрямую в состав!");
-                })
-                .catch(err => alert("Ошибка добавления: " + err));
+        function resetFormView() {
+            document.getElementById('clan-form').reset();
+            document.getElementById('clan-form').style.display = 'block';
+            document.getElementById('success-block').style.display = 'none';
+            changeTab('main');
         }
 
-        // ОТРИСОВКА ТАБЛИЦЫ УЧАСТНИКОВ (СЛЕВА)
-        window.renderClanMembers = function() {
-            const tbody = document.getElementById('clan-members-tbody');
-            if(!tbody) return;
-            tbody.innerHTML = '';
-
-            // Выбираем только тех, кто имеет статус "Принят"
-            const activeMembers = window.applications.filter(a => a.status === 'Принят');
-
-            if(activeMembers.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#444;">Состав пуст. Подайте заявку!</td></tr>`;
-                return;
-            }
-
-            // Доступ к удалению открыт для всех авторизованных сессий (и HellFoot, и HellGod)
-            const hasAdminAccess = localStorage.getItem('is_leader') === 'true' || localStorage.getItem('is_god') === 'true';
-
-            activeMembers.forEach(member => {
-                const tr = document.createElement('tr');
-                
-                // Формируем кнопку ссылки на стим, если она есть
-                const steamBtnHtml = member.steamLink 
-                    ? `<a href="${member.steamLink}" target="_blank" class="btn-steam-link">Steam</a>` 
-                    : `<span style="color:#444">—</span>`;
-
-                tr.innerHTML = `
-                    <td>${member.name}</td>
-                    <td><span class="member-role-tag">${member.role}</span></td>
-                    <td>${steamBtnHtml}</td>
-                    <td>
-                        <button class="btn-delete-member" style="display: ${hasAdminAccess ? 'block' : 'none'}" onclick="deleteClanMember('${member.id}')">✕</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        };
-
-        // УДАЛЕНИЕ ИГРОКА ИЗ ТАБЛИЦЫ
-        window.deleteClanMember = function(id) {
-            if(!window.removeData || !window.dbRefFunc) return;
-            if(confirm("Выгнать этого участника из состава?")) {
-                window.removeData(window.dbRefFunc(window.dbRefRaw, `applications/${id}`))
-                    .catch(err => alert("Ошибка удаления: " + err));
-            }
-        };
-
-        // ДВУХУРОВНЕВАЯ СИСТЕМА ПАРОЛЕЙ
+        // ДВУХУРОВНЕВАЯ СИСТЕМА ПАРОЛЕЙ С ЗАПОМИНАНИЕМ СЕССИИ
         function checkLeaderCode() {
             const code = document.getElementById('leader-code').value;
             const adminTab = document.getElementById('btn-admin-tab');
@@ -602,13 +533,14 @@
             const inputHash = sha256(code);
 
             if (inputHash === hashHellFoot) {
+                // Вход модератора
                 adminTab.style.display = 'block';
                 document.getElementById('login-container').style.display = 'none';
                 localStorage.setItem('is_leader', 'true');
                 localStorage.removeItem('is_god');
                 document.getElementById('leader-code').value = '';
-                window.renderClanMembers();
             } else if (inputHash === hashHellGod) {
+                // Вход сверхадмина
                 adminTab.style.display = 'block';
                 document.getElementById('login-container').style.display = 'none';
                 document.getElementById('god-panel').style.display = 'block';
@@ -616,7 +548,6 @@
                 localStorage.setItem('is_leader', 'true');
                 document.getElementById('leader-code').value = '';
                 renderAdminSessions();
-                window.renderClanMembers();
             }
         }
 
@@ -638,12 +569,12 @@
             document.getElementById('god-panel').style.display = 'none';
             document.getElementById('login-container').style.display = 'block';
             changeTab('main');
-            window.renderClanMembers();
         }
 
         function renderAdminSessions() {
             const container = document.getElementById('admins-list-container');
             const placeholder = document.getElementById('no-admins');
+            if(!container) return;
             container.innerHTML = '';
             
             if(localStorage.getItem('is_leader') === 'true') {
@@ -668,15 +599,8 @@
             }
         }
 
-        function resetFormView() {
-            document.getElementById('clan-form').reset();
-            document.getElementById('clan-form').style.display = 'block';
-            document.getElementById('success-block').style.display = 'none';
-            changeTab('main');
-        }
-
         window.updateBadges = function() {
-            const newApps = window.applications.filter(a => a.status === 'В очереди' && (!a.type || a.type === 'application')).length;
+            const newApps = window.applications.filter(a => a.status === 'В очереди').length;
             const appBadge = document.getElementById('app-badge');
             if(newApps > 0) {
                 appBadge.innerText = newApps;
@@ -690,6 +614,7 @@
                 const myAppsChanged = window.applications.filter(a => a.name === myName && a.status !== 'В очереди');
                 const lastCheck = parseInt(localStorage.getItem('last_bell_check') || 0);
                 const newNotesCount = myAppsChanged.filter(a => a.timestamp > lastCheck || (a.updateTimestamp && a.updateTimestamp > lastCheck)).length;
+                
                 const bellBadge = document.getElementById('bell-badge');
                 if (newNotesCount > 0) {
                     bellBadge.innerText = newNotesCount;
@@ -704,18 +629,17 @@
             const container = document.getElementById('apps-container');
             const noAppsText = document.getElementById('no-apps');
             if(!container) return;
+            
             container.innerHTML = '';
             container.appendChild(noAppsText);
 
-            const onlyApps = window.applications.filter(a => !a.type || a.type === 'application');
-
-            if(onlyApps.length === 0) {
+            if(window.applications.length === 0) {
                 noAppsText.style.display = 'block';
                 return;
             }
             noAppsText.style.display = 'none';
 
-            const reversedApps = [...onlyApps].reverse();
+            const reversedApps = [...window.applications].reverse();
 
             reversedApps.forEach((app) => {
                 const item = document.createElement('div');
@@ -752,6 +676,7 @@
         function openStatusModal(id, newStatus) {
             currentEditingId = id;
             currentTargetStatus = newStatus;
+            
             document.getElementById('modal-title').innerText = `Сообщение для игрока ("${newStatus}")`;
             document.getElementById('modal-text').value = '';
             document.getElementById('status-modal').style.display = 'flex';
@@ -759,6 +684,7 @@
 
         function saveStatusWithComment() {
             if (!window.updateData || !currentEditingId || !window.dbRefFunc) return;
+
             const commentText = document.getElementById('modal-text').value || 'Решение по вашей анкете принято.';
             
             const updates = {};
@@ -776,12 +702,14 @@
             const container = document.getElementById('user-notes-container');
             const noNotesText = document.getElementById('no-notes');
             if(!container) return;
+            
             container.innerHTML = '';
             container.appendChild(noNotesText);
 
             const myName = localStorage.getItem('my_app_name');
             const myApps = window.applications.filter(a => a.name === myName);
 
+            // Автоочистка уведомлений старше 7 дней (неделя в мс = 604800000)
             const activeApps = myApps.filter(app => {
                 const time = app.updateTimestamp || app.timestamp || 0;
                 return (new Date().getTime() - time) < 604800000;

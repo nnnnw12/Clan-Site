@@ -201,7 +201,7 @@
         .clan-info, .rules-list { font-size: 0.95rem; line-height: 1.7; }
         .clan-info p, .rules-list li { margin-bottom: 16px; }
 
-        /* Стилизация правил */
+        /* Стилизация требований */
         .rules-list { list-style: none; }
         .rules-list li { background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.02); padding: 15px 20px; border-radius: 8px; display: flex; align-items: center; gap: 15px; }
         .rules-icon { color: var(--accent); font-weight: 800; font-size: 1.1rem; }
@@ -248,7 +248,6 @@
             <div class="clan-tag">Rust Team</div>
             <div class="clan-name">〔 249 〕</div>
             
-            <!-- Колокольчик пользователя -->
             <button class="notification-bell" onclick="changeTab('notifications')">
                 <span class="badge" id="bell-badge">0</span>
                 <svg class="bell-icon" viewBox="0 0 24 24">
@@ -257,7 +256,6 @@
             </button>
         </div>
         
-        <!-- Меню вкладок -->
         <div class="tabs" id="main-tabs-nav">
             <button class="tab-btn active" id="t-main" onclick="changeTab('main')">Главная</button>
             <button class="tab-btn" id="t-about" onclick="changeTab('about')">О составе</button>
@@ -265,7 +263,6 @@
             <button class="tab-btn" id="btn-admin-tab" onclick="changeTab('admin')">Заявки <span class="badge" id="app-badge">0</span></button>
         </div>
 
-        <!-- ГЛАВНАЯ СТРАНИЦА -->
         <div id="main" class="tab-content active">
             <div class="slogan-list">
                 <div class="slogan-card"><span class="slogan-label">Приоритет</span><span class="slogan-value">Сыгранность</span></div>
@@ -275,7 +272,6 @@
             <button class="btn-action" onclick="changeTab('form')">Подать заявку в клан</button>
         </div>
 
-        <!-- О СОСТАВЕ -->
         <div id="about" class="tab-content">
             <button class="btn-back" onclick="changeTab('main')">← Назад</button>
             <div class="clan-info">
@@ -284,7 +280,6 @@
             </div>
         </div>
 
-        <!-- КРИТЕРИИ И ТРЕБОВАНИЯ -->
         <div id="rules" class="tab-content">
             <button class="btn-back" onclick="changeTab('main')">← Назад</button>
             <h3 style="color:#fff; margin-bottom: 20px; font-size:1.2rem;">Требования для вступления</h3>
@@ -304,7 +299,6 @@
             </ul>
         </div>
 
-        <!-- ФОРМА ЗАЯВКИ -->
         <div id="form" class="tab-content">
             <button class="btn-back" onclick="changeTab('main')">← Назад на главную</button>
             
@@ -366,7 +360,6 @@
             </div>
         </div>
 
-        <!-- УВЕДОМЛЕНИЯ ПОЛЬЗОВАТЕЛЯ -->
         <div id="notifications" class="tab-content">
             <button class="btn-back" onclick="changeTab('main')">← Назад</button>
             <h3 style="color:#fff; margin-bottom: 20px; font-size:1.1rem;">Ваши уведомления</h3>
@@ -375,7 +368,6 @@
             </div>
         </div>
 
-        <!-- АДМИН-ПАНЕЛЬ -->
         <div id="admin" class="tab-content">
             <button class="btn-back" onclick="changeTab('main')">← Выйти из панели</button>
             <button class="btn-logout" onclick="logoutLeader()">Выйти из сессии</button>
@@ -387,7 +379,6 @@
 
     </div>
 
-    <!-- Модальное окно лидера -->
     <div class="modal" id="status-modal">
         <div class="modal-content">
             <h4 id="modal-title">Сообщение для игрока</h4>
@@ -398,23 +389,64 @@
         </div>
     </div>
 
-    <!-- Секретный код для входа -->
     <div class="leader-login" id="login-container">
         <input type="password" id="leader-code" placeholder="Код Лидера" oninput="checkLeaderCode()">
     </div>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Твой конфиг базы данных
+        const firebaseConfig = {
+            apiKey: "AIzaSyCsqJtOPQ6GxY6d01PrFHUvBCMERUMMHTQ",
+            authDomain: "clan-b9798.firebaseapp.com",
+            databaseURL: "https://clan-b9798-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "clan-b9798",
+            storageBucket: "clan-b9798.firebasestorage.app",
+            messagingSenderId: "1035623149123",
+            appId: "1:1035623149123:web:72edebca2721f2ea0aeef6",
+            measurementId: "G-QDDP3TK683"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Делаем функции Firebase доступными глобально для обычных скриптов
+        window.dbRef = ref(db, 'applications');
+        window.pushData = push;
+        window.updateData = update;
+        window.dbRefRaw = db;
+
+        // Начинаем слушать изменения в базе данных онлайн
+        onValue(window.dbRef, (snapshot) => {
+            const data = snapshot.val();
+            window.applications = [];
+            
+            if (data) {
+                // Превращаем объект Firebase в массив с сохранением уникальных ключей ID
+                Object.keys(data).forEach(key => {
+                    window.applications.push({
+                        id: key,
+                        ...data[key]
+                    });
+                });
+            }
+            
+            // Перерисовываем интерфейсы при любом чихе в базе данных
+            window.updateBadges();
+            window.renderApplications();
+            window.renderNotes();
+        });
+    </script>
+
     <script>
-        let applications = JSON.parse(localStorage.getItem('c_apps')) || [];
-        let userNotes = JSON.parse(localStorage.getItem('c_notes')) || [];
-        let currentEditingIndex = null;
+        window.applications = [];
+        let currentEditingId = null;
         let currentTargetStatus = null;
 
         window.onload = function() {
-            cleanOldNotifications(); // Автоочистка старых уведомлений (старше 7 дней)
-            checkSavedSession();    // Проверка сохраненной сессии админа
-            updateBadges();
-            renderApplications();
-            renderNotes();
+            checkSavedSession();
         };
 
         function changeTab(tabId) {
@@ -433,12 +465,20 @@
 
             if (tabId === 'notifications') {
                 document.getElementById('bell-badge').style.display = 'none';
+                // Запоминаем время последнего просмотра колокольчика, чтобы сбрасывать счетчик
+                localStorage.setItem('last_bell_check', new Date().getTime());
             }
         }
 
+        // ОТПРАВКА ЗАЯВКИ В ОНЛАЙН БАЗУ
         function submitForm(e) {
             e.preventDefault();
             
+            if (!window.pushData) {
+                alert("База данных еще загружается, подождите секунду...");
+                return;
+            }
+
             const newApp = {
                 name: document.getElementById('f-name').value,
                 steamNick: document.getElementById('f-steam-nick').value,
@@ -448,17 +488,24 @@
                 useful: document.getElementById('f-useful').value,
                 team: document.getElementById('f-team').value,
                 status: 'В очереди',
-                comment: ''
+                comment: '',
+                timestamp: new Date().getTime()
             };
 
-            applications.push(newApp);
-            localStorage.setItem('c_apps', JSON.stringify(applications));
+            // Генерируем уникальный токен для этого браузера, чтобы он видел только свои ответы в колокольчике
+            if(!localStorage.getItem('my_app_name')) {
+                localStorage.setItem('my_app_name', newApp.name);
+            }
 
-            document.getElementById('clan-form').style.display = 'none';
-            document.getElementById('success-block').style.display = 'block';
-
-            updateBadges();
-            renderApplications();
+            // Отправляем прямо в Firebase Realtime Database
+            window.pushData(window.dbRef, newApp)
+                .then(() => {
+                    document.getElementById('clan-form').style.display = 'none';
+                    document.getElementById('success-block').style.display = 'block';
+                })
+                .catch(err => {
+                    alert("Ошибка отправки базы: " + err);
+                });
         }
 
         function resetFormView() {
@@ -468,7 +515,6 @@
             changeTab('main');
         }
 
-        // ПРОВЕРКА СОХРАНЕННОЙ СЕССИИ (Чтобы не вводить пароль заново)
         function checkSavedSession() {
             if (localStorage.getItem('is_leader') === 'true') {
                 document.getElementById('btn-admin-tab').style.display = 'block';
@@ -476,7 +522,6 @@
             }
         }
 
-        // Проверка зашифрованного кода лидера
         function checkLeaderCode() {
             const code = document.getElementById('leader-code').value;
             const adminTab = document.getElementById('btn-admin-tab');
@@ -485,14 +530,13 @@
             if (sha256(code) === secretHash) {
                 adminTab.style.display = 'block';
                 document.getElementById('login-container').style.display = 'none';
-                localStorage.setItem('is_leader', 'true'); // Сохраняем вход лидера
+                localStorage.setItem('is_leader', 'true');
                 document.getElementById('leader-code').value = '';
             } else {
                 adminTab.style.display = 'none';
             }
         }
 
-        // Выход из сессии лидера (если нужно спрятать вкладку обратно)
         function logoutLeader() {
             localStorage.removeItem('is_leader');
             document.getElementById('btn-admin-tab').style.display = 'none';
@@ -500,21 +544,9 @@
             changeTab('main');
         }
 
-        // АВТОМАТИЧЕСКАЯ ОЧИСТКА СТАРЫХ УВЕДОМЛЕНИЙ (Старше 7 дней)
-        function cleanOldNotifications() {
-            const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // Миллисекунды в одной неделе
-            const now = new Date().getTime();
-
-            // Фильтруем уведомления, оставляя только те, которые созданы меньше недели назад
-            userNotes = userNotes.filter(note => {
-                return (now - note.timestamp) < ONE_WEEK;
-            });
-
-            localStorage.setItem('c_notes', JSON.stringify(userNotes));
-        }
-
-        function updateBadges() {
-            const newApps = applications.filter(a => a.status === 'В очереди').length;
+        window.updateBadges = function() {
+            // Считаем новые заявки онлайн
+            const newApps = window.applications.filter(a => a.status === 'В очереди').length;
             const appBadge = document.getElementById('app-badge');
             if(newApps > 0) {
                 appBadge.innerText = newApps;
@@ -522,27 +554,49 @@
             } else {
                 appBadge.style.display = 'none';
             }
-        }
 
-        function renderApplications() {
+            // Считаем новые уведомления для конкретного пользователя (только измененные статусы по его имени)
+            const myName = localStorage.getItem('my_app_name');
+            if (myName) {
+                const myAppsChanged = window.applications.filter(a => a.name === myName && a.status !== 'В очереди');
+                const lastCheck = parseInt(localStorage.getItem('last_bell_check') || 0);
+                
+                // Проверяем, появились ли изменения после закрытия колокольчика
+                const newNotesCount = myAppsChanged.filter(a => a.timestamp > lastCheck || (a.updateTimestamp && a.updateTimestamp > lastCheck)).length;
+                
+                const bellBadge = document.getElementById('bell-badge');
+                if (newNotesCount > 0) {
+                    bellBadge.innerText = newNotesCount;
+                    bellBadge.style.display = 'block';
+                } else {
+                    bellBadge.style.display = 'none';
+                }
+            }
+        };
+
+        window.renderApplications = function() {
             const container = document.getElementById('apps-container');
             const noAppsText = document.getElementById('no-apps');
+            if(!container) return;
             
             container.innerHTML = '';
             container.appendChild(noAppsText);
 
-            if(applications.length === 0) {
+            if(window.applications.length === 0) {
                 noAppsText.style.display = 'block';
                 return;
             }
             noAppsText.style.display = 'none';
 
-            applications.forEach((app, index) => {
+            // Разворачиваем массив, чтобы новые были сверху
+            const reversedApps = [...window.applications].reverse();
+
+            reversedApps.forEach((app) => {
                 const item = document.createElement('div');
                 item.className = 'app-item';
                 
                 let statusClass = 'st-queue';
-                if(app.status === 'Смотряat') statusClass = 'st-review';
+                if(app.status === 'Смотрят') statusClass = 'st-review';
                 if(app.status === 'Принят') statusClass = 'st-accept';
                 if(app.status === 'Отклонено') statusClass = 'st-reject';
 
@@ -558,7 +612,7 @@
                         ${app.comment ? `<p style="color:var(--accent); margin-top:8px;"><b>Ответ лидера:</b> ${app.comment}</p>` : ''}
                     </div>
                     <label style="font-size:0.8rem; display:block; margin-bottom:5px; margin-top:10px;">Изменить статус:</label>
-                    <select class="status-select" onchange="openStatusModal(${index}, this.value)">
+                    <select class="status-select" onchange="openStatusModal('${app.id}', this.value)">
                         <option value="В очереди" ${app.status === 'В очереди' ? 'selected' : ''}>В очереди</option>
                         <option value="Смотрят" ${app.status === 'Смотрят' ? 'selected' : ''}>Смотрят</option>
                         <option value="Принят" ${app.status === 'Принят' ? 'selected' : ''}>Принят</option>
@@ -567,10 +621,10 @@
                 `;
                 container.appendChild(item);
             });
-        }
+        };
 
-        function openStatusModal(index, newStatus) {
-            currentEditingIndex = index;
+        function openStatusModal(id, newStatus) {
+            currentEditingId = id;
             currentTargetStatus = newStatus;
             
             document.getElementById('modal-title').innerText = `Сообщение для игрока ("${newStatus}")`;
@@ -578,68 +632,76 @@
             document.getElementById('status-modal').style.display = 'flex';
         }
 
+        // ОБНОВЛЕНИЕ СТАТУСА НАПРЯМУЮ В FIREBASE
         function saveStatusWithComment() {
+            if (!window.updateData || !currentEditingId) return;
+
             const commentText = document.getElementById('modal-text').value || 'Решение по вашей анкете принято.';
             
-            applications[currentEditingIndex].status = currentTargetStatus;
-            applications[currentEditingIndex].comment = commentText;
-            localStorage.setItem('c_apps', JSON.stringify(applications));
+            const updates = {};
+            updates[`/${currentEditingId}/status`] = currentTargetStatus;
+            updates[`/${currentEditingId}/comment`] = commentText;
+            updates[`/${currentEditingId}/updateTimestamp`] = new Date().getTime();
 
-            const playerNote = {
-                targetName: applications[currentEditingIndex].name,
-                status: currentTargetStatus,
-                text: commentText,
-                timeString: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                timestamp: new Date().getTime() // Запоминаем точное время создания для фильтра 7 дней
-            };
-            
-            userNotes.unshift(playerNote);
-            localStorage.setItem('c_notes', JSON.stringify(userNotes));
-
-            document.getElementById('status-modal').style.display = 'none';
-            
-            const bellBadge = document.getElementById('bell-badge');
-            bellBadge.innerText = parseInt(bellBadge.innerText || 0) + 1;
-            bellBadge.style.display = 'block';
-
-            updateBadges();
-            renderApplications();
-            renderNotes();
+            // Отправляем патч изменений в онлайн-базу
+            window.updateData(window.ref(window.dbRefRaw, 'applications'), updates)
+                .then(() => {
+                    document.getElementById('status-modal').style.display = 'none';
+                })
+                .catch(err => {
+                    alert("Ошибка изменения статуса в базе: " + err);
+                });
         }
 
-        function renderNotes() {
+        window.renderNotes = function() {
             const container = document.getElementById('user-notes-container');
             const noNotesText = document.getElementById('no-notes');
+            if(!container) return;
             
             container.innerHTML = '';
             container.appendChild(noNotesText);
 
-            if(userNotes.length === 0) {
+            const myName = localStorage.getItem('my_app_name');
+            // Фильтруем онлайн базу: ищем только те анкеты, у которых имя совпадает с именем отправителя с этого ПК
+            const myApps = window.applications.filter(a => a.name === myName);
+
+            // Автоочистка уведомлений старше 7 дней (неделя в мс = 604800000)
+            const activeApps = myApps.filter(app => {
+                const time = app.updateTimestamp || app.timestamp || 0;
+                return (new Date().getTime() - time) < 604800000;
+            });
+
+            if(activeApps.length === 0 || activeApps.every(a => a.status === 'В очереди')) {
                 noNotesText.style.display = 'block';
                 return;
             }
             noNotesText.style.display = 'none';
 
-            userNotes.forEach(note => {
+            // Выводим изменения статусов
+            activeApps.forEach(app => {
+                if (app.status === 'В очереди') return;
+
                 const element = document.createElement('div');
                 let typeClass = '';
                 let statusText = '';
                 
-                if(note.status === 'Принят') { typeClass = 'accepted'; statusText = 'Ваша заявка одобрена!'; }
-                else if(note.status === 'Отклонено') { typeClass = 'rejected'; statusText = 'Заявка была отклонена'; }
-                else { statusText = `Статус вашей анкеты: "${note.status}"`; }
+                if(app.status === 'Принят') { typeClass = 'accepted'; statusText = 'Ваша заявка одобрена!'; }
+                else if(app.status === 'Отклонено') { typeClass = 'rejected'; statusText = 'Заявка была отклонена'; }
+                else { statusText = `Статус вашей анкеты: "${app.status}"`; }
+
+                const time = app.updateTimestamp ? new Date(app.updateTimestamp) : new Date();
+                const timeStr = time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
                 element.className = `note-item ${typeClass}`;
                 element.innerHTML = `
-                    <h5>${statusText} <span style="float:right; font-size:0.75rem; color:#555;">${note.timeString}</span></h5>
-                    <p style="color:#fff; margin-top:5px;"><b>Комментарий:</b> "${note.text}"</p>
-                    ${note.status === 'Принят' ? `<a href="https://discord.gg/N27UXBtfBy" target="_blank" class="ds-btn">Войти в Discord-канал</a>` : ''}
+                    <h5>${statusText} <span style="float:right; font-size:0.75rem; color:#555;">${timeStr}</span></h5>
+                    <p style="color:#fff; margin-top:5px;"><b>Комментарий:</b> "${app.comment || 'Без комментария.'}"</p>
+                    ${app.status === 'Принят' ? `<a href="https://discord.gg/N27UXBtfBy" target="_blank" class="ds-btn">Войти в Discord-канал</a>` : ''}
                 `;
                 container.appendChild(element);
             });
-        }
+        };
 
-        // SHA-256 алгоритм
         function sha256(ascii) {
             function rightRotate(value, amount) { return (value>>>amount) | (value<<(32-amount)); };
             var mathPow = Math.pow; var maxWord = mathPow(2, 32); var lengthProperty = 'length'; var i, j; var result = ''; var words = []; var asciiBitLength = ascii[lengthProperty]*8; var hash = sha256.h = sha256.h || []; var k = sha256.k = sha256.k || []; var primeCounter = k[lengthProperty];

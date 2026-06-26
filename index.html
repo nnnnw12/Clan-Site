@@ -81,6 +81,7 @@
             padding: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
             font-size: 0.9rem;
+            vertical-align: middle;
         }
 
         .members-table th {
@@ -93,6 +94,25 @@
 
         .members-table td { color: var(--text-bright); }
         .member-role-tag { color: var(--accent); font-weight: 600; }
+
+        /* Кнопка Steam в таблице */
+        .btn-steam-link {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .btn-steam-link:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
 
         .btn-delete-member {
             background: none; border: none; color: var(--status-reject); cursor: pointer;
@@ -140,16 +160,12 @@
         .slogan-label { font-size: 0.8rem; text-transform: uppercase; color: #4e5361; font-weight: 700; }
         .slogan-value { font-size: 1.05rem; font-weight: 700; color: var(--text-bright); }
 
-        /* Панель интеграции Discord */
-        .discord-link-box {
-            margin-top: 25px; background: rgba(88, 101, 242, 0.03); border: 1px dashed rgba(88, 101, 242, 0.2);
-            padding: 20px; border-radius: 8px; text-align: left;
+        /* Блок ручного добавления в админке */
+        .manual-add-box {
+            background: rgba(212, 175, 55, 0.02); border: 1px dashed rgba(212, 175, 55, 0.15);
+            padding: 20px; border-radius: 8px; margin-bottom: 30px; text-align: left;
         }
-        .discord-link-box h5 { color: #fff; margin-bottom: 8px; font-size: 0.95rem; }
-        .discord-input-group { display: flex; gap: 8px; margin-top: 10px; }
-        .discord-input-group input { flex: 1; padding: 10px; background: #11141e; border: 1px solid rgba(255,255,255,0.05); border-radius: 4px; color: #fff; outline: none; font-size: 0.85rem; }
-        .btn-ds-connect { background: #5865F2; color: #fff; border: none; padding: 10px 15px; font-weight: bold; font-size: 0.8rem; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
-        .btn-ds-connect:hover { background: #4752c4; }
+        .manual-add-box h4 { color: #fff; font-size: 1rem; margin-bottom: 15px; }
 
         /* Кнопки админки */
         .btn-action, .btn-submit { display: block; width: 100%; padding: 16px; text-align: center; background: linear-gradient(180deg, #d4af37 0%, #aa8416 100%); border: 1px solid rgba(255,255,255,0.1); color: #000; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; border-radius: 6px; cursor: pointer; transition: all 0.2s; text-decoration: none; }
@@ -211,6 +227,7 @@
 
     <div class="main-layout">
         
+        <!-- ЛЕВАЯ КОЛОНКА: СПИСОК УЧАСТНИКОВ КЛАНА -->
         <div class="members-panel">
             <h3 style="color:#fff; font-size:1.1rem; letter-spacing:1px;">Участники состава 〔 249 〕</h3>
             <table class="members-table">
@@ -218,13 +235,16 @@
                     <tr>
                         <th>Имя / Никнейм</th>
                         <th>Основная роль</th>
+                        <th>Steam</th>
                         <th style="width: 30px;"></th>
                     </tr>
                 </thead>
                 <tbody id="clan-members-tbody">
-                    </tbody>
+                    <!-- Заполняется динамически из базы данных -->
+                </tbody>
             </table>
 
+            <!-- Блок Сверхадмина (HellGod): Управление модераторами -->
             <div class="admin-sessions-list" id="god-panel">
                 <h5>Активные сессии админов (HellFoot)</h5>
                 <p id="no-admins" style="font-size:0.8rem; color:#444;">Активных модераторов в сети нет.</p>
@@ -232,6 +252,7 @@
             </div>
         </div>
 
+        <!-- ПРАВАЯ КОЛОНКА: ОСНОВНОЙ ИНТЕРФЕЙС САЙТА -->
         <div class="container">
             
             <div class="clan-header">
@@ -253,6 +274,7 @@
                 <button class="tab-btn" id="btn-admin-tab" onclick="changeTab('admin')">Заявки <span class="badge" id="app-badge">0</span></button>
             </div>
 
+            <!-- ГЛАВНАЯ СТРАНИЦА -->
             <div id="main" class="tab-content active">
                 <div class="slogan-list">
                     <div class="slogan-card"><span class="slogan-label">Приоритет</span><span class="slogan-value">Сыгранность</span></div>
@@ -260,17 +282,9 @@
                     <div class="slogan-card" style="border-left: 2px solid var(--accent);"><span class="slogan-label">Цель</span><span class="slogan-value" style="color:var(--accent);">Максимальный КПД</span></div>
                 </div>
                 <button class="btn-action" onclick="changeTab('form')">Подать заявку в клан</button>
-
-                <div class="discord-link-box">
-                    <h5>Привязать свой аккаунт Discord</h5>
-                    <p style="font-size:0.8rem; color:#6b7280;">Синхронизируйте свой профиль, чтобы заявить о себе в списке участников.</p>
-                    <div class="discord-input-group">
-                        <input type="text" id="ds-username-input" placeholder="Ваш ник в Discord (например: skif_rust)">
-                        <button class="btn-ds-connect" onclick="linkDiscordAccount()">Привязать</button>
-                    </div>
-                </div>
             </div>
 
+            <!-- О СОСТАВЕ -->
             <div id="about" class="tab-content">
                 <button class="btn-back" onclick="changeTab('main')">← Назад</button>
                 <div class="clan-info">
@@ -279,6 +293,7 @@
                 </div>
             </div>
 
+            <!-- ТРЕБОВАНИЯ -->
             <div id="rules" class="tab-content">
                 <button class="btn-back" onclick="changeTab('main')">← Назад</button>
                 <h3 style="color:#fff; margin-bottom: 20px; font-size:1.2rem;">Требования для вступления</h3>
@@ -292,6 +307,7 @@
                 </ul>
             </div>
 
+            <!-- ФОРМА ЗАЯВКИ -->
             <div id="form" class="tab-content">
                 <button class="btn-back" onclick="changeTab('main')">← Назад на главную</button>
                 
@@ -334,6 +350,7 @@
                 </div>
             </div>
 
+            <!-- УВЕДОМЛЕНИЯ -->
             <div id="notifications" class="tab-content">
                 <button class="btn-back" onclick="changeTab('main')">← Назад</button>
                 <h3 style="color:#fff; margin-bottom: 20px; font-size:1.1rem;">Ваши уведомления</h3>
@@ -342,10 +359,47 @@
                 </div>
             </div>
 
+            <!-- АДМИН-ПАНЕЛЬ -->
             <div id="admin" class="tab-content">
                 <button class="btn-back" onclick="changeTab('main')">← Выйти из панели</button>
                 <button class="btn-logout" onclick="logoutLeader()">Выйти из сессии</button>
                 <h3 style="color:#fff; margin-bottom: 20px; font-size:1.2rem;">Панель управления анкетами</h3>
+                
+                <!-- ФОРМА ДОБАВЛЕНИЯ УЧАСТНИКА ВРУЧНУЮ (ДЛЯ АДМИНОВ) -->
+                <div class="manual-add-box">
+                    <h4>Добавить участника вручную</h4>
+                    <form id="manual-add-form" onsubmit="addMemberManually(event)">
+                        <div class="form-group" style="margin-bottom:12px;">
+                            <label style="font-size:0.8rem;">Имя / Никнейм игрока</label>
+                            <input type="text" id="m-name" placeholder="Пример: HellFoot" style="padding:10px; font-size:0.85rem;" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom:12px;">
+                            <label style="font-size:0.8rem;">Роль в клане</label>
+                            <select id="m-role" style="padding:10px; font-size:0.85rem;">
+                                <option value="Коллер (Caller)">Коллер (Caller)</option>
+                                <option value="Комбатёр (PvP)">Комбатёр (PvP)</option>
+                                <option value="Рейдер (Raider)">Рейдер (Raider)</option>
+                                <option value="Главный Билдер (Main Builder)">Главный Билдер (Main Builder)</option>
+                                <option value="Билдер (Builder)">Билдер (Builder)</option>
+                                <option value="Электрик (Electrician)">Электрик (Electrician)</option>
+                                <option value="Фермер (Farmer)">Фермер (Farmer)</option>
+                                <option value="Фармила (Resource Farmer)">Фармила (Resource Farmer)</option>
+                                <option value="Пилот (Pilot)">Пилот (Pilot)</option>
+                                <option value="Водитель (Driver)">Водитель (Driver)</option>
+                                <option value="Снайпер (Sniper)">Снайпер (Sniper)</option>
+                                <option value="Лутер (Looter)">Лутер (Looter)</option>
+                                <option value="Медик (Medic)">Медик (Medic)</option>
+                                <option value="Рекрут (Recruit)">Рекрут (Recruit)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom:15px;">
+                            <label style="font-size:0.8rem;">Ссылка на профиль Steam</label>
+                            <input type="url" id="m-steam-link" placeholder="https://steamcommunity.com/..." style="padding:10px; font-size:0.85rem;" required>
+                        </div>
+                        <button type="submit" class="btn-submit" style="padding:12px; font-size:0.8rem;">Добавить в состав</button>
+                    </form>
+                </div>
+
                 <div class="apps-list" id="apps-container">
                     <p id="no-apps" style="text-align:center; color:#555;">Новых заявок пока нет.</p>
                 </div>
@@ -354,6 +408,7 @@
         </div>
     </div>
 
+    <!-- Модальное окно лидера -->
     <div class="modal" id="status-modal">
         <div class="modal-content">
             <h4 id="modal-title">Сообщение для игрока</h4>
@@ -362,10 +417,12 @@
         </div>
     </div>
 
+    <!-- Секретные входы -->
     <div class="leader-login" id="login-container">
         <input type="password" id="leader-code" placeholder="Код Доступа" oninput="checkLeaderCode()">
     </div>
 
+    <!-- ПОДКЛЮЧЕНИЕ FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -433,7 +490,7 @@
             }
         }
 
-        // ОТПРАВКА АНКЕТЫ
+        // ОТПРАВКА АНКЕТЫ ИГРОКОМ
         function submitForm(e) {
             e.preventDefault();
             if (!window.pushData) return;
@@ -448,7 +505,7 @@
                 team: document.getElementById('f-team').value,
                 status: 'В очереди',
                 comment: '',
-                type: 'application', // Метка, что это анкета
+                type: 'application',
                 timestamp: new Date().getTime()
             };
 
@@ -461,24 +518,31 @@
                 });
         }
 
-        // ПРИВЯЗКА ДИСКОРДА
-        function linkDiscordAccount() {
-            const dsInput = document.getElementById('ds-username-input').value;
-            if(!dsInput.trim()) return alert("Введите рабочий ник Discord!");
+        // РУЧНОЕ ДОБАВЛЕНИЕ УЧАСТНИКА АДМИНИСТРАЦИЕЙ
+        function addMemberManually(e) {
+            e.preventDefault();
+            if (!window.pushData) return;
 
-            const newDiscordUser = {
-                name: dsInput,
-                role: "[ Discord User ]",
-                status: "Принят", // Discord привязывается сразу в активные
-                type: "discord",
+            const mName = document.getElementById('m-name').value;
+            const mRole = document.getElementById('m-role').value;
+            const mSteam = document.getElementById('m-steam-link').value;
+
+            const manualUser = {
+                name: mName,
+                role: mRole,
+                steamLink: mSteam,
+                steamNick: mName,
+                status: "Принят", // Сразу попадает в состав
+                type: "manual",
                 timestamp: new Date().getTime()
             };
 
-            window.pushData(window.dbRef, newDiscordUser)
+            window.pushData(window.dbRef, manualUser)
                 .then(() => {
-                    document.getElementById('ds-username-input').value = '';
-                    alert("Аккаунт Discord успешно привязан к сайту!");
-                });
+                    document.getElementById('manual-add-form').reset();
+                    alert("Участник успешно добавлен напрямую в состав!");
+                })
+                .catch(err => alert("Ошибка добавления: " + err));
         }
 
         // ОТРИСОВКА ТАБЛИЦЫ УЧАСТНИКОВ (СЛЕВА)
@@ -487,25 +551,31 @@
             if(!tbody) return;
             tbody.innerHTML = '';
 
-            // Фильтруем базу: берем привязанные дискорды ИЛИ одобренные заявки со статусом "Принят"
+            // Выбираем только тех, кто имеет статус "Принят"
             const activeMembers = window.applications.filter(a => a.status === 'Принят');
 
             if(activeMembers.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#444;">Состав пуст. Подайте заявку!</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#444;">Состав пуст. Подайте заявку!</td></tr>`;
                 return;
             }
 
-            // Проверяем статус входа (для отображения кнопок удаления)
-            const isLeader = localStorage.getItem('is_leader') === 'true';
-            const isGod = localStorage.getItem('is_god') === 'true';
+            // Доступ к удалению открыт для всех авторизованных сессий (и HellFoot, и HellGod)
+            const hasAdminAccess = localStorage.getItem('is_leader') === 'true' || localStorage.getItem('is_god') === 'true';
 
             activeMembers.forEach(member => {
                 const tr = document.createElement('tr');
+                
+                // Формируем кнопку ссылки на стим, если она есть
+                const steamBtnHtml = member.steamLink 
+                    ? `<a href="${member.steamLink}" target="_blank" class="btn-steam-link">Steam</a>` 
+                    : `<span style="color:#444">—</span>`;
+
                 tr.innerHTML = `
                     <td>${member.name}</td>
                     <td><span class="member-role-tag">${member.role}</span></td>
+                    <td>${steamBtnHtml}</td>
                     <td>
-                        <button class="btn-delete-member" style="display: ${isLeader || isGod ? 'block' : 'none'}" onclick="deleteClanMember('${member.id}')">✕</button>
+                        <button class="btn-delete-member" style="display: ${hasAdminAccess ? 'block' : 'none'}" onclick="deleteClanMember('${member.id}')">✕</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -532,7 +602,6 @@
             const inputHash = sha256(code);
 
             if (inputHash === hashHellFoot) {
-                // Вход Обычного Админа
                 adminTab.style.display = 'block';
                 document.getElementById('login-container').style.display = 'none';
                 localStorage.setItem('is_leader', 'true');
@@ -540,7 +609,6 @@
                 document.getElementById('leader-code').value = '';
                 window.renderClanMembers();
             } else if (inputHash === hashHellGod) {
-                // Вход Сверхадмина (HellGod)
                 adminTab.style.display = 'block';
                 document.getElementById('login-container').style.display = 'none';
                 document.getElementById('god-panel').style.display = 'block';
@@ -573,13 +641,11 @@
             window.renderClanMembers();
         }
 
-        // Рендер панели управления модераторами для HellGod
         function renderAdminSessions() {
             const container = document.getElementById('admins-list-container');
             const placeholder = document.getElementById('no-admins');
             container.innerHTML = '';
             
-            // Если в локалсторадже лежит сессия обычного лидера, выводим её как цель для удаления
             if(localStorage.getItem('is_leader') === 'true') {
                 placeholder.style.display = 'none';
                 const div = document.createElement('div');
@@ -641,7 +707,6 @@
             container.innerHTML = '';
             container.appendChild(noAppsText);
 
-            // Отображаем только анкетные типы (пропускаем чистые дискорд-линки)
             const onlyApps = window.applications.filter(a => !a.type || a.type === 'application');
 
             if(onlyApps.length === 0) {

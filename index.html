@@ -237,7 +237,7 @@
 
         .leader-login { position: fixed; bottom: 15px; left: 15px; opacity: 0.05; transition: opacity 0.3s; }
         .leader-login:hover { opacity: 1; }
-        .leader-login input { background: #111; border: 1px solid #222; padding: 6px 10px; border-radius: 4px; color: var(--accent); font-size: 0.75rem; width: 90px; outline: none; }
+        .leader-login input { background: #111; border: 1px solid #222; padding: 6px 10px; border-radius: 4px; color: var(--accent); font-size: 0.75rem; width: 100px; outline: none; }
     </style>
 </head>
 <body>
@@ -417,6 +417,7 @@
         window.pushData = push;
         window.updateData = update;
         window.dbRefRaw = db;
+        window.dbRefFunc = ref; // Добавляем глобальную ссылку на функцию ref
 
         // Начинаем слушать изменения в базе данных онлайн
         onValue(window.dbRef, (snapshot) => {
@@ -632,19 +633,19 @@
             document.getElementById('status-modal').style.display = 'flex';
         }
 
-        // ОБНОВЛЕНИЕ СТАТУСА НАПРЯМУЮ В FIREBASE
+        // ОБНОВЛЕНИЕ СТАТУСА НАПРЯМУЮ В FIREBASE (ИСПРАВЛЕНО И СОЕДИНЕНО С СДК)
         function saveStatusWithComment() {
-            if (!window.updateData || !currentEditingId) return;
+            if (!window.updateData || !currentEditingId || !window.dbRefFunc) return;
 
             const commentText = document.getElementById('modal-text').value || 'Решение по вашей анкете принято.';
             
             const updates = {};
-            updates[`/${currentEditingId}/status`] = currentTargetStatus;
-            updates[`/${currentEditingId}/comment`] = commentText;
-            updates[`/${currentEditingId}/updateTimestamp`] = new Date().getTime();
+            updates[`/applications/${currentEditingId}/status`] = currentTargetStatus;
+            updates[`/applications/${currentEditingId}/comment`] = commentText;
+            updates[`/applications/${currentEditingId}/updateTimestamp`] = new Date().getTime();
 
-            // Отправляем патч изменений в онлайн-базу
-            window.updateData(window.ref(window.dbRefRaw, 'applications'), updates)
+            // Корректно вызываем update с использованием ссылки на корневой узел
+            window.updateData(window.dbRefFunc(window.dbRefRaw), updates)
                 .then(() => {
                     document.getElementById('status-modal').style.display = 'none';
                 })
@@ -662,7 +663,6 @@
             container.appendChild(noNotesText);
 
             const myName = localStorage.getItem('my_app_name');
-            // Фильтруем онлайн базу: ищем только те анкеты, у которых имя совпадает с именем отправителя с этого ПК
             const myApps = window.applications.filter(a => a.name === myName);
 
             // Автоочистка уведомлений старше 7 дней (неделя в мс = 604800000)
@@ -677,7 +677,6 @@
             }
             noNotesText.style.display = 'none';
 
-            // Выводим изменения статусов
             activeApps.forEach(app => {
                 if (app.status === 'В очереди') return;
 
